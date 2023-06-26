@@ -4,6 +4,9 @@
   align-items: center;
   padding: 10px;
   background-color: #f1f1f1;
+  /* hmm */
+  position: relative;
+  z-index: 1;
 }
 
 .logo {
@@ -24,13 +27,35 @@
 .nav {
   margin-left: auto;
   margin-right: 10px;
+  /* hmm */
+  position: absolute;
+  top: 100%; /* Position the menu below the header */
+  left: 0;
+  width: 100%;
+  background-color: #f1f1f1;
+  padding: 10px;
+  display: none;
 }
+
+.nav.mobile {
+  display: block;
+  
+}
+
+
 
 .nav-links {
   list-style: none;
-  display: flex;
-  gap: 10px;
-  font-family: 'Roboto';
+  padding: 0;
+}
+
+.nav-links li {
+  margin-bottom: 10px;
+}
+
+.nav-links a {
+  display: block;
+  text-align: left;
 }
 
 .link {
@@ -39,7 +64,15 @@
 }
 
 .menu-toggle {
-  display: none;
+  /* display: none; */
+  /* hmm */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  cursor: pointer;
+  z-index: 100;
 }
 
 .menu-toggle span {
@@ -49,6 +82,7 @@
   background-color: #333;
   margin-bottom: 5px;
   transition: transform 0.3s ease-in-out;
+
 }
 
 .menu-toggle.active span:nth-child(2) {

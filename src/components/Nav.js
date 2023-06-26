@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import icons from '../constants/icons';
-import './styles/header.css';
+import './styles/nav.css';
 
 const Header = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -46,11 +46,6 @@ const Header = () => {
           <li>
             <Link to="/login" className="link" onClick={toggleMobileMenu}>
               Login
-            </Link>
-          </li>
-          <li>
-            <Link to="/register" className="link" onClick={toggleMobileMenu}>
-              Register
             </Link>
           </li>
         </ul>

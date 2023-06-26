@@ -4,13 +4,12 @@ import './App.css';
 import { db } from './config/firebase'
 import { getDocs, collection } from 'firebase/firestore';
 
-import Header from './components/Header';
+import Nav from './components/Nav';
 import Home from './components/Home';
 import Workouts from './components/Workouts';
 import Progress from './components/Progress';
 import Profile from './components/Profile';
 import Login from './components/Login'
-import Register from './components/Register';
 import Footer from './components/Footer';
 import SignUp from './components/SignUp';
 
@@ -39,7 +38,7 @@ const App = () => {
 
   return (
     <div >
-      <Header />
+      <Nav />
 
       <Routes>
           <Route path="/" element={<Home />} />
@@ -47,7 +46,6 @@ const App = () => {
           <Route exact path="progress" element={<Progress />} />
           <Route exact path="profile" element={<Profile />} />
           <Route exact path="login" element={<Login />} />
-          <Route exact path="register" element={<Register />} />
           <Route exact path="signup" element={<SignUp  />} />
         </Routes>
 
