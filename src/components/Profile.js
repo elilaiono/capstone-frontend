@@ -1,12 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { auth } from '../config/firebase';
+import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const navigate = useNavigate();
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      console.log("User logged out successfully");
+      navigate('/');
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
 
   let handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,9 +87,11 @@ const Profile = () => {
 
         <div className="message">{message ? <p>{message}</p> : null}</div>
       </form>
+
+      <button onClick={handleLogout}>Logout</button>
+
     </div>
   );
 };
 
 export default Profile;
-

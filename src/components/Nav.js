@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import icons from '../constants/icons';
 import './styles/nav.css';
 
-const Header = () => {
+const Nav = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -54,4 +54,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Nav;

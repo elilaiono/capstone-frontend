@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { auth } from "../config/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import axios from "axios";
 
-import './styles/signup.css';
+import "./styles/signup.css";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -11,7 +10,14 @@ const SignUp = () => {
 
   const signUp = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const response = await axios.post("http://localhost:8080/users/add", {
+        email: email,
+        password: password,
+      });
+
+      // Handle the response or show success message as needed
+      console.log(response.data);
+
       setShowSuccessModal(true);
     } catch (error) {
       console.error(error);
@@ -52,3 +58,7 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+
+
+
