@@ -59,7 +59,8 @@ const WorkoutDetails = () => {
             <div className={workoutVisibility[workout.id] ? "workout-card expanded" : "workout-card"} 
             key={workout.id} onClick={() => toggleDetails(workout.id)}>
               <div className="front">
-              <img src={icons.benchPress} alt="benchPress" className="" />
+              {/* <img src={icons.benchPress} alt="benchPress" className="" /> */}
+              <img src={workout.imgUrl} />
                 <h3>{workout.exerciseName}</h3>
                     {/* Add image here */}
               </div>
