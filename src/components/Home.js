@@ -1,39 +1,18 @@
-import { db } from '../config/firebase'
-import { getDocs, collection } from 'firebase/firestore';
-import { React, useEffect, useState } from 'react';
+import UserData from './UserData';
 
 const Home = () => {
-  const [userList, setUserList] = useState([]);
+  const { userData } = UserData();
 
-  const userCollectionRef = collection(db, "users")
+  if (!userData) {
+    return <p>Sign up to see your profile!</p>;
+  }
 
-  useEffect(() => {
-    const getUserList = async () => {
-      try {
-        const data = await getDocs(userCollectionRef);
-        const filteredData = data.docs.map((doc) => ({
-          ...doc.data(), 
-          id: doc.id}))
-        // console.log(filteredData)
-        setUserList(filteredData)
-      } catch (error) {
-        console.error(error)
-      }
-    };
+  return (
+    <div>
+      <h1>Welcome, {userData.firstName}! </h1>
+    </div>
+  );
+};
 
-    getUserList();
-  }, []);
-
-    return (
-        <div>
-        {userList.map((user) => (
-            <div key={user.id}>
-                <h1>{user.firstName} {user.lastName}</h1>
-                <p>{user.email}</p>
-            </div>
-        ))}
-        </div>
-        );
-    };
- 
 export default Home;
+

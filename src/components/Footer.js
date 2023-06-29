@@ -1,7 +1,7 @@
 const Footer = () => {
     return ( 
         <div>
-            <p>Elijah Aiono Capstone</p>
+            <p>&copy; 2023 Elijah Aiono. All rights reserved.</p>
         </div>
      );
 }

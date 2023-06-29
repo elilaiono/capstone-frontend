@@ -1,96 +1,20 @@
-import { useState, useEffect } from "react";
-import { auth } from '../config/firebase';
-import { signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import UserData from "./UserData";
 
 const Profile = () => {
-  const navigate = useNavigate();
-
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      console.log("User logged out successfully");
-      navigate('/');
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-  };
-
-  let handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const user = {
-        firstName: firstName,
-        lastName: lastName,
-        password: password,
-        email: email,
-        userId: auth?.currentUser?.uid
-      };
-
-      let res = await fetch("http://localhost:8080/users/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-
-      if (res.status === 200) {
-        setFirstName("");
-        setLastName("");
-        setPassword("");
-        setEmail("");
-        setMessage("User created successfully");
-      } else {
-        setMessage("Some error occurred");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const { userData, handleLogout } = UserData();
 
   return (
-    <div className="regUser">
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={firstName}
-          placeholder="First Name"
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <input
-          type="text"
-          value={lastName}
-          placeholder="Last Name"
-          onChange={(e) => setLastName(e.target.value)}
-        />
-        <input
-          type="password"
-          value={password}
-          placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          type="email"
-          value={email}
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <button type="submit">Create</button>
-
-        <div className="message">{message ? <p>{message}</p> : null}</div>
-      </form>
-
+      <div>        
+      {userData ? (
+        <div>
+          <h3>{userData.firstName}</h3>
+          <h3>{userData.lastName}</h3>
+          <h3>{userData.email}</h3>
+        </div>
+      ) : null}
       <button onClick={handleLogout}>Logout</button>
-
-    </div>
+      </div>
+   
   );
 };
 
