@@ -3,7 +3,10 @@ import { auth } from '../config/firebase';
 import { fetchUserCollectionData, fetchBaseWorkoutCollectionData } from './FetchData';
 
 const WorkoutData = () => {
-  const [pushWorkouts, setPushWorkout] = useState([])
+  const [pushWorkouts, setPushWorkouts] = useState([])
+  const [pullWorkouts, setPullWorkouts] = useState([])
+  const [legWorkouts, setLegWorkouts] = useState([])
+  const [cardioWorkouts, setCardioWorkouts] = useState([])
 
   const [workoutData, setWorkoutData] = useState([]);
   const [message, setMessage] = useState("");
@@ -11,8 +14,17 @@ const WorkoutData = () => {
   const fetchBaseWorkouts = async () => {
     try {
       const pushWorkoutData = await fetchBaseWorkoutCollectionData("push")
-      setPushWorkout(pushWorkoutData)
-      // console.log("ALL PUSH WORKOUTS:", pushWorkouts)
+      setPushWorkouts(pushWorkoutData)
+
+      const pullWorkoutData = await fetchBaseWorkoutCollectionData("pull")
+      setPullWorkouts(pullWorkoutData)
+
+      const legWorkoutData = await fetchBaseWorkoutCollectionData("legs")
+      setLegWorkouts(legWorkoutData)
+
+      const cardioWorkoutData = await fetchBaseWorkoutCollectionData("cardio")
+      setCardioWorkouts(cardioWorkoutData)
+
     } catch (error) {
       console.error("Error fetching workouts:", error);
       setMessage("Error getting workouts")
@@ -39,13 +51,17 @@ const WorkoutData = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("ALL PUSH WORKOUTS:", pushWorkouts);
-  }, [pushWorkouts]);
-
-
-
-  return { workoutData, pushWorkouts }; // Return the userData state
+  // useEffect(() => {
+  //   console.log("ALL PULL WORKOUTS:", pullWorkouts);
+  // }, [pullWorkouts]);
+  
+  return { 
+    workoutData,
+    pushWorkouts,
+    pullWorkouts,
+    legWorkouts,
+    cardioWorkouts
+  }; // Return the userData state
 };
 
 export default WorkoutData;

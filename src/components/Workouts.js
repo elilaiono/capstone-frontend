@@ -2,6 +2,10 @@ import { useState } from "react";
 import { auth } from '../config/firebase';
 import WorkoutDetails from "./WorkoutDetails";
 
+import icons from "../constants/icons";
+
+import './styles/workouts.css'
+
 const Workouts = () => {
 
   const [exerciseName, setExerciseName] = useState("");
@@ -51,10 +55,16 @@ const Workouts = () => {
       console.log(err);
     }
   };
-
+  
   return (
-    <div>
+    <div className="workouts-container">
+      
+      <WorkoutDetails />
+
       <div className="regUser">
+
+
+        
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -107,7 +117,6 @@ const Workouts = () => {
         </form>
       </div>
 
-      <WorkoutDetails />
 
     </div>
   );
