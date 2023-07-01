@@ -1,10 +1,23 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { UserContext } from './useUserData';
 import { Link } from 'react-router-dom';
+import UserData from './useUserData'
+
 import icons from '../constants/icons';
 import './styles/nav.css';
 
 const Nav = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // const { userData, handleLogout } = useContext(UserContext);
+  const { userData, handleLogout } = UserData();
+
+  let loggedInUserData = userData;
+
+  // check in local storage
+  if(!loggedInUserData) {
+    loggedInUserData = JSON.parse(localStorage.getItem('userData'));
+  }
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
@@ -24,29 +37,36 @@ const Nav = () => {
       <nav className={`nav ${isMobileMenuOpen ? 'mobile' : ''}`}>
         <ul className="nav-links">
           <li>
-            <Link to="/" className="link" onClick={toggleMobileMenu}>
+            <Link to="/" className="link" onClick={() => setMobileMenuOpen(false)}>
               Home
             </Link>
           </li>
           <li>
-            <Link to="/workouts" className="link" onClick={toggleMobileMenu}>
+            <Link to="/workouts" className="link" onClick={() => setMobileMenuOpen(false)}>
               Workouts
             </Link>
           </li>
           <li>
-            <Link to="/progress" className="link" onClick={toggleMobileMenu}>
+            <Link to="/progress" className="link" onClick={() => setMobileMenuOpen(false)}>
               Progress
             </Link>
           </li>
           <li>
-            <Link to="/profile" className="link" onClick={toggleMobileMenu}>
+            <Link to="/profile" className="link" onClick={() => setMobileMenuOpen(false)}>
               Profile
             </Link>
           </li>
           <li>
-            <Link to="/login" className="link" onClick={toggleMobileMenu}>
-              Login
-            </Link>
+            {console.log("This is the user data:", userData)}
+            { userData ? (
+              <Link to="/" className="link" onClick={handleLogout}>
+                Logout
+              </Link>
+            ) : (
+              <Link to="/login" className="link" onClick={() => setMobileMenuOpen(false)}>
+                Login
+              </Link>
+            )}
           </li>
         </ul>
       </nav>

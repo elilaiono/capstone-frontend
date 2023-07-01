@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { auth } from '../config/firebase';
-import { fetchUserCollectionData, fetchBaseWorkoutCollectionData } from './FetchData';
+import { fetchUserWorkoutCollectionData, fetchBaseWorkoutCollectionData } from './FetchData';
+import { onAuthStateChanged } from "firebase/auth";
 
 const WorkoutData = () => {
   const [pushWorkouts, setPushWorkouts] = useState([])
@@ -11,19 +12,24 @@ const WorkoutData = () => {
   const [workoutData, setWorkoutData] = useState([]);
   const [message, setMessage] = useState("");
 
-  const fetchBaseWorkouts = async () => {
+  const fetchBaseWorkouts =  () => {
     try {
-      const pushWorkoutData = await fetchBaseWorkoutCollectionData("push")
-      setPushWorkouts(pushWorkoutData)
+      fetchBaseWorkoutCollectionData("push").then((pushWorkoutData) => {
+        setPushWorkouts(pushWorkoutData)
+      })
+        
 
-      const pullWorkoutData = await fetchBaseWorkoutCollectionData("pull")
-      setPullWorkouts(pullWorkoutData)
+      fetchBaseWorkoutCollectionData("pull").then((pullWorkoutData) => {
+        setPullWorkouts(pullWorkoutData)
+      })
 
-      const legWorkoutData = await fetchBaseWorkoutCollectionData("legs")
-      setLegWorkouts(legWorkoutData)
+      fetchBaseWorkoutCollectionData("legs").then((legWorkoutData) => {
+        setLegWorkouts(legWorkoutData)
+      })
 
-      const cardioWorkoutData = await fetchBaseWorkoutCollectionData("cardio")
-      setCardioWorkouts(cardioWorkoutData)
+      fetchBaseWorkoutCollectionData("cardio").then((cardioWorkoutData) => {
+        setCardioWorkouts(cardioWorkoutData)
+      })
 
     } catch (error) {
       console.error("Error fetching workouts:", error);
@@ -34,7 +40,7 @@ const WorkoutData = () => {
   const fetchUserData = async () => {
     try {
       const userId = auth.currentUser.uid;
-      const fetchedUserData = await fetchUserCollectionData("userWorkout", userId);
+      const fetchedUserData = await fetchUserWorkoutCollectionData("users", "workouts", userId)
       setWorkoutData(fetchedUserData);
       // Store user data in local storage
       localStorage.setItem('userData', JSON.stringify(fetchedUserData));
@@ -46,14 +52,32 @@ const WorkoutData = () => {
   
   useEffect(() => {
     fetchBaseWorkouts();
-    if (auth.currentUser) {
-      fetchUserData();
-    }
   }, []);
-
+  
   // useEffect(() => {
-  //   console.log("ALL PULL WORKOUTS:", pullWorkouts);
-  // }, [pullWorkouts]);
+  //   if (auth.currentUser) {
+  //     console.log(auth.currentUser)
+  //     fetchUserData();
+  //   }
+  // },[auth])
+
+  useEffect(()=>{
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          // const uid = user.uid;
+          // // ...
+          // console.log("uid", uid)
+          fetchUserData();
+        } else {
+          // User is signed out
+          // ...
+          console.log("user is logged out")
+        }
+      });
+     
+}, [])
   
   return { 
     workoutData,

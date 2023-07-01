@@ -1,4 +1,4 @@
-import UserData from "./UserData";
+import UserData from "./useUserData";
 
 const Profile = () => {
   const { userData, handleLogout } = UserData();

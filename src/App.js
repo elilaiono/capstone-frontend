@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css';
 import { db } from './config/firebase'
 import { getDocs, collection } from 'firebase/firestore';
+import { UserProvider } from './components/useUserData';
 
 import Nav from './components/Nav';
 import Home from './components/Home';
@@ -38,6 +39,7 @@ const App = () => {
 
   return (
     <div >
+      {/* <UserProvider> */}
       <Nav />
 
       <Routes>
@@ -49,7 +51,8 @@ const App = () => {
           <Route exact path="signup" element={<SignUp  />} />
         </Routes>
 
-      <Footer />  
+      <Footer />
+      {/* </UserProvider>   */}
     </div>
   );
 }

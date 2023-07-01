@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@700&display=swap');
 
+* {
+  box-sizing: border-box;
+}
 
 .header {
   display: flex;
@@ -7,9 +10,12 @@
   align-items: center;
   padding: 10px;
   background-color: #f1f1f1;
-  /* hmm */
   position: relative;
   z-index: 1;
+  /* border-top: solid black 20px; */
+  /* border-bottom: solid black 20px; */
+  margin-top: -20px;
+  margin-bottom: -20px;
 }
 
 .logo {
@@ -20,7 +26,6 @@
 .logo-name {
   font-family: 'Rubik', sans-serif;
   font-size: 40px;
-
 }
 
 .logo-image {
@@ -30,48 +35,25 @@
 }
 
 .nav {
-  margin-left: auto;
-  margin-right: 10px;
-  /* hmm */
-  position: absolute;
-  top: 100%; /* Position the menu below the header */
-  left: 0;
-  width: 100%;
-  background-color: #f1f1f1;
-  padding: 10px;
-  display: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-
-.nav.mobile {
-  display: block;
-  
-}
-
-
 
 .nav-links {
+  display: flex;
   list-style: none;
   padding: 0;
-}
-
-.nav-links li {
-  margin-bottom: 10px;
+  gap: 15px;
 }
 
 .nav-links a {
-  display: block;
-  text-align: left;
-}
-
-.link {
   text-decoration: none;
   color: #333;
 }
 
 .menu-toggle {
-  /* display: none; */
-  /* hmm */
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: space-between;
   width: 30px;
@@ -87,7 +69,6 @@
   background-color: #333;
   margin-bottom: 5px;
   transition: transform 0.3s ease-in-out;
-
 }
 
 .menu-toggle.active span:nth-child(2) {
@@ -103,22 +84,42 @@
 }
 
 @media screen and (max-width: 768px) {
+
+  .logo-name {
+    font-size: 30px;
+  }
+  
+  .logo-image {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
   .nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #f1f1f1;
+    flex-direction: column;
+    padding: 10px;
     display: none;
   }
 
-  .menu-toggle {
-    display: block;
-    cursor: pointer;
+  .nav.mobile {
+    display: flex;
   }
 
-  .nav.mobile {
-    display: block;
+  .menu-toggle {
+    display: flex;
   }
 
   .nav-links {
     flex-direction: column;
-    align-items: center;
-    gap: 15px;
+    align-items: flex-start;
+  }
+  
+  .nav-links li {
+    text-align: left;
+    
   }
 }
