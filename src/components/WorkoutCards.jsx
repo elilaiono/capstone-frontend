@@ -1,12 +1,14 @@
-import { useState } from "react";
+import React, { useState, useContext } from "react";
 import { auth } from "../config/firebase";
-import WorkoutData from './WorkoutData';
-import UserData from "./useUserData";
+import WorkoutData from './useWorkoutData';
+// import UserData from "./useUserData";
+import UserContext from "../contexts/UserContext";
 
 import '../styles/workoutCards.css'
 
 const WorkoutCards = ({ selectedWorkout, setSelectedWorkout }) => {
-  const { userData } = UserData();
+  // const { userData } = UserData();
+  const userData = useContext(UserContext)
   const baseUrl = process.env.REACT_APP_BASE_URL
 
   const { 
@@ -80,7 +82,10 @@ const WorkoutCards = ({ selectedWorkout, setSelectedWorkout }) => {
             <div className={workoutVisibility[workout.id] ? "workout-card expanded" : "workout-card"} 
             key={workout.id} onClick={() => toggleDetails(workout.id)}>
               <div className="front">
-                <img src={workout.imgUrl ? workout.imgUrl : 'https://loremflickr.com/320/240'} alt="benchPress" />
+                <img src={workout.imgUrl ? workout.imgUrl : 'https://loremflickr.com/320/240'} 
+                alt="benchPress"
+                loading="lazy"
+                />
                 <h3 className="workout-name">{workout.exerciseName}</h3>
               </div>
               <div className="back">

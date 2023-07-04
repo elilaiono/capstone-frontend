@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css';
 import { db } from './config/firebase'
 import { getDocs, collection } from 'firebase/firestore';
-import { UserProvider } from './components/useUserData';
+import UserDataProvider from './components/UserDataProvider';
+import WorkoutDataProvider from './components/WorkoutDataProvider';
 
 import Nav from './components/Nav';
 import Home from './components/Home';
@@ -39,20 +40,22 @@ const App = () => {
 
   return (
     <div >
-      {/* <UserProvider> */}
-      <Nav />
+      <UserDataProvider>
+        <WorkoutDataProvider>
+          <Nav />
 
-      <Routes>
-          <Route path="/" element={<Home />} />
-          <Route exact path="workouts" element={<Workouts />} />
-          <Route exact path="progress" element={<Progress />} />
-          <Route exact path="profile" element={<Profile />} />
-          <Route exact path="login" element={<Login />} />
-          <Route exact path="signup" element={<SignUp  />} />
-        </Routes>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route exact path="workouts" element={<Workouts />} />
+              <Route exact path="progress" element={<Progress />} />
+              <Route exact path="profile" element={<Profile />} />
+              <Route exact path="login" element={<Login />} />
+              <Route exact path="signup" element={<SignUp  />} />
+            </Routes>
 
-      <Footer />
-      {/* </UserProvider>   */}
+          <Footer />
+        </WorkoutDataProvider>
+      </UserDataProvider>
     </div>
   );
 }

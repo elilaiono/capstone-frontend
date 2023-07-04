@@ -1,16 +1,21 @@
-import { useState, useContext } from 'react';
-import { UserContext } from './useUserData';
-import { Link } from 'react-router-dom';
-import UserData from './useUserData'
+import React, { useState, useContext } from 'react';
+import UserContext from '../contexts/UserContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { auth } from '../config/firebase';
+// import UserData from './useUserData'
 
 import icons from '../constants/icons';
-import '../styles/nav.css';
+import "../styles/nav.css"
 
 const Nav = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
-  // const { userData, handleLogout } = useContext(UserContext);
-  const { userData, handleLogout } = UserData();
+  const [userLoginData, setUserLoginData] = useState(null);
+
+  // const { userData } = UserData();
+  const userData = useContext(UserContext)
+  const navigate = useNavigate();
+
 
   let loggedInUserData = userData;
 
@@ -21,6 +26,21 @@ const Nav = () => {
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      console.log("User logged out successfully");
+      // Clear user data from local storage
+      // localStorage.removeItem('userData');
+      setUserLoginData(null);
+      navigate('/');
+      window.location.reload();
+
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   };
 
   return (

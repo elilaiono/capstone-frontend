@@ -1,7 +1,10 @@
-import UserData from "./useUserData";
+// import UserData from "./useUserData";
+import React, { useContext } from "react";
+import UserContext from "../contexts/UserContext";
 
 const Profile = () => {
-  const { userData, handleLogout } = UserData();
+  // const { userData } = UserData();
+  const userData = useContext(UserContext)
 
   return (
       <div>        
@@ -12,7 +15,7 @@ const Profile = () => {
           <h3>{userData.email}</h3>
         </div>
       ) : null}
-      <button onClick={handleLogout}>Logout</button>
+      {/* <button onClick={handleLogout}>Logout</button> */}
       </div>
    
   );

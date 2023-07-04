@@ -1,16 +1,18 @@
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { auth } from '../config/firebase';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 import WorkoutCards from "./WorkoutCards";
 import WorkoutForm from "./WorkoutForm";
-import UserData from "./useUserData";
+// import UserData from "./useUserData";
+import UserContext from "../contexts/UserContext";
 import '../styles/workouts.css'
 
 const Workouts = ({}) => {
-  const { userData } = UserData();
+  // const { userData } = UserData();
+  const userData = useContext(UserContext)
   const { reset } = useForm()
   
   const [image, setImage] = useState(null);

@@ -1,10 +1,11 @@
-// import { useContext } from 'react';
-import UserData from './useUserData';
+import { useContext } from 'react';
+// import UserData from './useUserData';
+import UserContext from '../contexts/UserContext';
 import '../styles/home.css'
 
 const Home = () => {
-  const { userData } = UserData();
-  // const { userData } = useContext(UserContext)
+  // const { userData } = UserData();
+  const userData = useContext(UserContext)
   // console.log(userData)
 
   if (!userData) {
