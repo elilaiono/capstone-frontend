@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import UserData from './useUserData'
 
 import icons from '../constants/icons';
-import './styles/nav.css';
+import '../styles/nav.css';
 
 const Nav = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -57,7 +57,7 @@ const Nav = () => {
             </Link>
           </li>
           <li>
-            {console.log("This is the user data:", userData)}
+            {/* {console.log("This is the user data:", userData)} */}
             { userData ? (
               <Link to="/" className="link" onClick={handleLogout}>
                 Logout

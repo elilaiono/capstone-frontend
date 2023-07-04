@@ -7,10 +7,9 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    /* background-color: #FF5722; */
-  }
-  
-  .regUser form {
+}
+
+.regUser form {
     background-color: #fff;
     padding: 30px;
     border-radius: 8px;
@@ -18,9 +17,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .regUser input, .regUser select {
+}
+
+.regUser input, .regUser select, .regUser textarea {
     width: 100%;
     height: 40px;
     margin-bottom: 10px;
@@ -28,9 +27,9 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
-  }
-  
-  .regUser button {
+}
+
+.regUser button {
     width: 100%;
     height: 40px;
     margin-bottom: 10px;
@@ -40,19 +39,41 @@
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
-  }
-  
-  .regUser button:hover {
+}
+
+.regUser button:hover {
     background-color: #E64A19;
-  }
-  
-  .regUser .message {
+}
+
+.regUser .message {
     margin-top: 20px;
-  }
-  
-  @media (min-width: 768px) {
+}
+
+.error-message {
+    color: #ff0000;
+    background-color: #ffe6e6;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px 0;
+    display: inline-block;
+}
+
+@media (min-width: 768px) {
     .regUser form {
-      width: 400px;
+        max-width: 80%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
-  }
-  
+
+    .regUser input, .regUser select, .regUser textarea, .regUser button {
+        width: 48%;
+    }
+
+    .regUser button {
+      margin: 0 auto;
+      margin-top: 10px;
+    }
+
+    
+}

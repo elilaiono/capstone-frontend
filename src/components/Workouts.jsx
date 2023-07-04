@@ -1,123 +1,129 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { auth } from '../config/firebase';
-import WorkoutDetails from "./WorkoutDetails";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
-import icons from "../constants/icons";
+import WorkoutCards from "./WorkoutCards";
+import WorkoutForm from "./WorkoutForm";
+import UserData from "./useUserData";
+import '../styles/workouts.css'
 
-import './styles/workouts.css'
-
-const Workouts = () => {
-
-  const [exerciseName, setExerciseName] = useState("");
-  const [description, setDescription] = useState("");
-  const [equipment, setEquipment] = useState("");
-  const [difficultyLevel, setDifficultyLevel] = useState("");
-  const [duration, setDuration] = useState("");
-  const [additionalNotes, setAdditionalNotes] = useState("");
-  const [type, setType] = useState(""); // New state for type
+const Workouts = ({}) => {
+  const { userData } = UserData();
+  const { reset } = useForm()
+  
+  const [image, setImage] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [selectedWorkout, setSelectedWorkout] = useState(null);
   const [message, setMessage] = useState("")
 
-  let handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const user = {
-        exerciseName: exerciseName,
-        description: description,
-        equipment: equipment,
-        difficultyLevel: difficultyLevel,
-        duration: duration,
-        additionalNotes: additionalNotes,
-        type: type, // Include type in the user object
+  useEffect(() => {
+    console.log('selectedWorkout changed', selectedWorkout);
+  }, [selectedWorkout]);
+  
+
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
+  let onSubmit = async (data) => {
+    // console.log('onSubmit called', data)
+    let apiUrl;
+    let method;
+    let user;
+
+    if (isUpdating) {
+      setIsUpdating(false);
+      setSelectedWorkout(null);
+    }
+
+    if (data.delete) {
+      apiUrl = `http://localhost:8080/users/workouts/${auth.currentUser.uid}/${data.id}`;
+      method = "DELETE";
+    } else {
+      apiUrl = data.id 
+        ? `http://localhost:8080/users/workouts/${auth.currentUser.uid}/${data.id}`
+        : "http://localhost:8080/users/workouts/add";
+      method = data.id ? "PUT" : "POST";
+      user = {
+        ...data,
         userId: auth?.currentUser?.uid
       };
-
-      let res = await fetch("http://localhost:8080/userWorkout/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-
-      if (res.status === 200) {
-        setExerciseName("");
-        setDescription("");
-        setEquipment("");
-        setDifficultyLevel("")
-        setDuration("");
-        setAdditionalNotes("");
-        setType(""); // Reset the type state
-        setMessage("User created successfully");
-      } else {
-        setMessage("Some error occurred");
+    }
+  
+    if (image) {
+      const storage = getStorage();
+      const storageRef = ref(storage, `images/${image.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, image);
+  
+      try {
+        await new Promise((resolve, reject) => {
+          uploadTask.on('state_changed', 
+            (snapshot) => {}, 
+            (error) => {
+              console.error('Error uploading image:', error);
+              reject(error);
+            }, 
+            async () => {
+              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+              user.imgUrl = downloadURL;
+              resolve();
+            }
+          );
+        });
+      } catch (error) {
+        console.log('Error occurred while uploading the image');
       }
-    } catch (err) {
-      console.log(err);
+    }
+    
+    let res = await fetch(apiUrl, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+  
+    if (res.status === 200) {
+      if (data.delete) {
+        console.log(`Workout deleted successfully`);
+        setMessage("Workout deleted successfully");
+      } else {
+        console.log(`Workout was created/updated successfully`);
+        setMessage(data.id ? "Workout updated successfully" : "Workout created successfully");
+      }
+      reset(); // Resetting the form
+      setSelectedWorkout(null);  // Clear selected workout after successful update
+      window.location.reload(); // Reloading the page
+    } else {
+      console.log(`An error occurred:`, res.status)
+      setMessage("Some error occurred");
     }
   };
   
   return (
     <div className="workouts-container">
-      
-      <WorkoutDetails />
-
-      <div className="regUser">
-
-
-        
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={exerciseName}
-            placeholder="Exercise Name..."
-            onChange={(e) => setExerciseName(e.target.value)}
-          />
-          <input
-            type="text"
-            value={description}
-            placeholder="Description..."
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <input
-            type="text"
-            value={equipment}
-            placeholder="Equipment..."
-            onChange={(e) => setEquipment(e.target.value)}
-          />
-          <input
-            type="text"
-            value={difficultyLevel}
-            placeholder="Difficulty Level"
-            onChange={(e) => setDifficultyLevel(e.target.value)}
-          />
-          <input
-            type="text"
-            value={duration}
-            placeholder="Duration"
-            onChange={(e) => setDuration(e.target.value)}
-          />
-          <input
-            type="text"
-            value={additionalNotes}
-            placeholder="Additional Notes"
-            onChange={(e) => setAdditionalNotes(e.target.value)}
-          />
-
-          <select value={type} onChange={(e) => setType(e.target.value)}>
-            <option value="">Select Type</option>
-            <option value="push">Push</option>
-            <option value="pull">Pull</option>
-            <option value="legs">Legs</option>
-            <option value="cardio">Cardio</option>
-          </select>
-
-          <button type="submit">Create</button>
-
-          <div className="message">{message ? <p>{message}</p> : null}</div>
-        </form>
-      </div>
+      <WorkoutCards
+      selectedWorkout={selectedWorkout}
+      setSelectedWorkout={setSelectedWorkout}
+      onSubmit={onSubmit}
+      />
 
 
+      {message && <div className="message">{message}</div>}
+      { userData ? (
+        <div className="regUser">
+      <WorkoutForm 
+      initialValues={selectedWorkout || {}} 
+      onSubmit={onSubmit} 
+      buttonText={selectedWorkout ? "Update" : "Create"} 
+      handleImageChange={handleImageChange} />
+    </div> ) :
+      null
+}
     </div>
   );
 };

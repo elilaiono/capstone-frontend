@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from '../config/firebase'
-import { signInWithEmailAndPassword } from "firebase/auth";
 import axios from "axios";
 
-import "./styles/signup.css";
+import "../styles/signup.css";
 
 const SignUp = () => {
   const navigate = useNavigate();

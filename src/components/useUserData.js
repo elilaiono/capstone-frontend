@@ -20,7 +20,7 @@ import { onAuthStateChanged } from "firebase/auth";
       setUserData(userData);
       
       // Store user data in local storage
-      localStorage.setItem('userData', JSON.stringify(userData));
+      // localStorage.setItem('userData', JSON.stringify(userData));
     } catch (error) {
       console.error("Error fetching user data:", error);
       setMessage("Error retrieving user data");
@@ -56,7 +56,7 @@ import { onAuthStateChanged } from "firebase/auth";
       await signOut(auth);
       console.log("User logged out successfully");
       // Clear user data from local storage
-      localStorage.removeItem('userData');
+      // localStorage.removeItem('userData');
       setUserData(null);
       navigate('/');
     } catch (error) {
@@ -69,52 +69,4 @@ import { onAuthStateChanged } from "firebase/auth";
 
 export default UserData
 
-// import React, { createContext, useState, useEffect } from "react";
-// import { auth } from '../config/firebase';
-// import { signOut } from "firebase/auth";
-// import { useNavigate } from "react-router-dom";
-// import { fetchUserCollectionData } from './FetchData';
 
-// export const UserContext = createContext();
-
-// export const UserProvider = ({ children }) => {
-//   const navigate = useNavigate();
-//   const [userData, setUserData] = useState(null);
-
-//   const fetchUserData = async () => {
-//     try {
-//       const userId = auth.currentUser.uid;
-//       const userData = await fetchUserCollectionData("users", userId); // Pass the collection name and userId
-//       setUserData(userData);
-//       // Store user data in local storage
-//       localStorage.setItem('userData', JSON.stringify(userData));
-//     } catch (error) {
-//       console.error("Error fetching user data:", error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     if (auth.currentUser) {
-//       fetchUserData();
-//     }
-//   }, []);
-
-//   const handleLogout = async () => {
-//     try {
-//       await signOut(auth);
-//       console.log("User logged out successfully");
-//       // Clear user data from local storage
-//       localStorage.removeItem('userData');
-//       setUserData(null);
-//       navigate('/');
-//     } catch (error) {
-//       console.error("Error during logout:", error);
-//     }
-//   };
-
-//   return (
-//     <UserContext.Provider value={{ userData, handleLogout }}>
-//       {children}
-//     </UserContext.Provider>
-//   );
-// };
