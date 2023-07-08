@@ -1,23 +1,19 @@
-import { useContext } from 'react';
-// import UserData from './useUserData';
+import { useContext, useState } from 'react';
 import UserContext from '../contexts/UserContext';
-import '../styles/home.css'
+import '../styles/home.css';
+import TestLandingPage from './LandingPage'
 
 const Home = () => {
-  // const { userData } = UserData();
   const userData = useContext(UserContext)
-  // console.log(userData)
-
-  if (!userData) {
-    return <p>Sign up to see your profile!</p>;
-  }
 
   return (
+    <div style={{ backgroundColor: "#fafafa" }}>
     <div className='home-container'>
-      <h1>Welcome, {userData.firstName}! </h1>
+      {/* {userData ? <h1>Welcome, {userData.firstName}!</h1> : <p>Sign up to see your profile!</p>} */}
+      <TestLandingPage />
+    </div>
     </div>
   );
 };
 
 export default Home;
-

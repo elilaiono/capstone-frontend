@@ -1,14 +1,15 @@
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { auth } from '../config/firebase';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import Album from "./WorkoutCards";
 
-import WorkoutCards from "./WorkoutCards";
+import WorkoutCards from "./OldWorkoutCards";
 import WorkoutForm from "./WorkoutForm";
 // import UserData from "./useUserData";
 import UserContext from "../contexts/UserContext";
-import '../styles/workouts.css'
+import '../styles/form.css'
 
 const Workouts = ({}) => {
   // const { userData } = UserData();
@@ -20,10 +21,19 @@ const Workouts = ({}) => {
   const [selectedWorkout, setSelectedWorkout] = useState(null);
   const [message, setMessage] = useState("")
 
+  const [showForm, setShowForm] = useState(false); // state to track whether form is shown
+  const formRef = useRef(null); // reference to the form
+
   useEffect(() => {
     console.log('selectedWorkout changed', selectedWorkout);
   }, [selectedWorkout]);
-  
+
+  const handleClick = () => {
+    setShowForm(true);
+    window.setTimeout(() => {
+      formRef.current.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
@@ -108,24 +118,29 @@ const Workouts = ({}) => {
   
   return (
     <div className="workouts-container">
-      <WorkoutCards
+      {/* <WorkoutCards
       selectedWorkout={selectedWorkout}
       setSelectedWorkout={setSelectedWorkout}
       onSubmit={onSubmit}
+      /> */}
+      <Album
+      selectedWorkout={selectedWorkout}
+      setSelectedWorkout={setSelectedWorkout}
+      handleClick={handleClick}
+      onSubmit={onSubmit}
       />
 
-
       {message && <div className="message">{message}</div>}
-      { userData ? (
-        <div className="regUser">
+      <div ref={formRef}>
+      { showForm && (
       <WorkoutForm 
       initialValues={selectedWorkout || {}} 
       onSubmit={onSubmit} 
       buttonText={selectedWorkout ? "Update" : "Create"} 
-      handleImageChange={handleImageChange} />
-    </div> ) :
-      null
-}
+      handleImageChange={handleImageChange} 
+      />
+      )}
+      </div>
     </div>
   );
 };

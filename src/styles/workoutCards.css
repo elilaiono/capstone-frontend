@@ -4,6 +4,9 @@
 
 body {
   overflow-x: hidden;
+  /* background-color: #FAF9F6; */
+  /* background-color: black; */
+
 }
 
 /* select dropdown */
@@ -26,11 +29,14 @@ body {
   font-size: 16px;
   color: #333;
   background-color: #fff;
+  /* background-color: black; */
 }
 
 .workout-cards-container {
   display: block;
   padding: 30px;
+  /* background-color: #FAF9F6; */
+
 }
 
 /* workout card */

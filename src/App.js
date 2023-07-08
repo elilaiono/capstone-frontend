@@ -15,7 +15,6 @@ import Login from './components/Login'
 import Footer from './components/Footer';
 import SignUp from './components/SignUp';
 
-
 const App = () => {
   const [userList, setUserList] = useState([]);
 

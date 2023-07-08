@@ -1,50 +1,32 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useForm } from 'react-hook-form';
+import { TextField, Button, Card, Typography, Box, Dialog, DialogContent, DialogTitle } from "@mui/material";
 
-import "../styles/signup.css";
+import "../styles/form.css";
 
 const SignUp = () => {
   const navigate = useNavigate();
-
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  const signUp = async () => {
+  const onSubmit = async ({ firstName, lastName, email, password }) => {
     try {
       const response = await axios.post("http://localhost:8080/users/add", {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
+        firstName,
+        lastName,
+        email,
+        password,
       });
 
       // Handle the response or show success message as needed
       console.log(response.data);
       console.log(email)
 
-      // await signInWithEmailAndPassword(auth, email, password);
-      // console.log("User logged in successfully");
-
       setShowSuccessModal(true);
     } catch (error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error(error.response.data);
-        console.error(error.response.status);
-        console.error(error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser
-        console.error(error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error("Error", error.message);
-      }
       console.error(error);
     }
   };
@@ -55,51 +37,74 @@ const SignUp = () => {
   };
 
   return (
-    <div className="signup-container">
-      <div className="card">
-        {showSuccessModal && (
-          <div className="modal">
-            <div className="success-message">
-              Registered successfully! Please login in!
-              <button onClick={closeSuccessModal}>Close</button>
-            </div>
-          </div>
-        )}
+    <div style={{ backgroundColor: "#FAF9F6" }}>
+    <Box className="signup-container" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      {/* <Card sx={{ p: 4, maxWidth: 400, mx: 'auto' }}> */}
+      <Card className="form-card">
+        <Typography variant="h5" component="h2" sx={{ textAlign: 'center', mb: 3 }}>
+          Sign Up
+        </Typography>
 
-        <input
-          type="text"
-          value={firstName}
-          placeholder="First Name..."
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <input
-          type="text"
-          value={lastName}
-          placeholder="Last Name..."
-          onChange={(e) => setLastName(e.target.value)}
-        />
-        <input
-          type="email"
-          value={email}
-          placeholder="Email..."
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <TextField
+            {...register("firstName", { required: true })}
+            placeholder="First Name..."
+            error={errors.firstName}
+            helperText={errors.firstName && "First Name is required"}
+            sx={{ mb: 2 }}
+            fullWidth
+          />
 
-        <input
-          type="password"
-          value={password}
-          placeholder="Password..."
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <TextField
+            {...register("lastName", { required: true })}
+            placeholder="Last Name..."
+            error={errors.lastName}
+            helperText={errors.lastName && "Last Name is required"}
+            sx={{ mb: 2 }}
+            fullWidth
+          />
 
-        <button onClick={signUp}>Sign Up</button>
-      </div>
+          <TextField
+            {...register("email", { required: true })}
+            placeholder="Email..."
+            type="email"
+            error={errors.email}
+            helperText={errors.email && "Email is required"}
+            sx={{ mb: 2 }}
+            fullWidth
+          />
+
+          <TextField
+            {...register("password", { required: true })}
+            placeholder="Password..."
+            type="password"
+            error={errors.password}
+            helperText={errors.password && "Password is required"}
+            sx={{ mb: 2 }}
+            fullWidth
+          />
+
+          <Button variant="contained" color="primary" type="submit" fullWidth>
+            Sign Up
+          </Button>
+        </form>
+      </Card>
+
+      <Dialog open={showSuccessModal} onClose={closeSuccessModal}>
+        <DialogTitle>Success</DialogTitle>
+        <DialogContent>
+          Registered successfully! Please login in!
+          <Button variant="contained" color="primary" onClick={closeSuccessModal} fullWidth sx={{ mt: 2 }}>
+            Close
+          </Button>
+        </DialogContent>
+      </Dialog>
+    </Box>
     </div>
   );
 };
 
 export default SignUp;
-
 
 
 

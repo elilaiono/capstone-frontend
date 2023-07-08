@@ -2,48 +2,70 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { TextField, Button, Card, Typography, Box, Link } from "@mui/material";
+import { useForm } from 'react-hook-form';
 
-import '../styles/login.css';
+import '../styles/form.css';
 
 const Login = () => {
   const navigate = useNavigate();
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const signIn = async () => {
+  const onSubmit = async ({email, password}) => {
     try {
-      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      await signInWithEmailAndPassword(auth, email, password);
       navigate('/');
-      console.log(loginEmail);
+      console.log(email);
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <div className="login-container">
-      <div className="card">
-        <input
-          placeholder="Email..."
-          type="email"
-          onChange={(e) => setLoginEmail(e.target.value)}
-        />
+    <div style={{ backgroundColor: "#FAF9F6" }}>
+    <Box className="login-container" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      {/* <Card sx={{ p: 4, maxWidth: 400, mx: 'auto' }}> */}
+      <Card className="form-card">
+        <Typography variant="h5" component="h2" sx={{ textAlign: 'center', mb: 3 }}>
+          Login
+        </Typography>
 
-        <input
-          placeholder="Password..."
-          type="password"
-          onChange={(e) => setLoginPassword(e.target.value)}
-        />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <TextField
+            {...register("email", { required: true })}
+            placeholder="Email..."
+            type="email"
+            error={errors.email}
+            helperText={errors.email && "Email is required"}
+            sx={{ mb: 2 }}
+            fullWidth
+          />
 
-        <button onClick={signIn}>Sign In</button>
+          <TextField
+            {...register("password", { required: true })}
+            placeholder="Password..."
+            type="password"
+            error={errors.password}
+            helperText={errors.password && "Password is required"}
+            sx={{ mb: 2 }}
+            fullWidth
+          />
 
-        <p>
-          Not registered? <Link to="/signup">Create an account</Link>
-        </p>
-      </div>
+          <Button variant="contained" color="primary" type="submit" fullWidth>
+            Sign In
+          </Button>
+        </form>
+
+        <Typography sx={{ mt: 2, textAlign: 'center' }}>
+          Not registered? <Link component={RouterLink} to="/signup">Create an account</Link>
+        </Typography>
+      </Card>
+    </Box>
     </div>
   );
 };
 
 export default Login;
+
+

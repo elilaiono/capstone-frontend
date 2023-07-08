@@ -1,72 +1,201 @@
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
+
+import React, { useEffect, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Box, Card, Typography } from "@mui/material";
 
 function WorkoutForm({ initialValues, onSubmit, buttonText, handleImageChange, updating }) {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
-  
+  const { register, handleSubmit, formState: { errors }, control, reset } = useForm();
+  const [fileName, setFileName] = useState("");
+
+
   // reset form values when initialValues change
   useEffect(() => {
     reset(initialValues);
   }, [initialValues, reset]);
 
+  const onChange = (files) => {
+    if (files.length) {
+      setFileName(files[0].name);
+    } else {
+      setFileName("");
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          type="text"
-          name="Exercise"
-          placeholder="Exercise Name..."
-          {...register('exerciseName', { required: true })}
-        />
-        {errors.exerciseName && <span className="error-message"> *</span>}
-  
-        <textarea
-          type="text"
-          placeholder="Description..."
-          {...register('description', { required: true })}
-        />
-        {errors.description && <span className="error-message"> *</span>}
-  
-        <input
-          type="text"
-          placeholder="Equipment..."
-          {...register('equipment', { required: true })}
-        />
-        {errors.equipment && <span className="error-message"> *</span>}
-  
-        <input
-          type="text"
-          placeholder="Difficulty Level"
-          {...register('difficultyLevel', { required: true })}
-        />
-        {errors.difficultyLevel && <span className="error-message"> *</span>}
-  
-        <input
-          type="text"
-          placeholder="Duration"
-          {...register('duration', { required: true })}
-        />
-        {errors.duration && <span className="error-message"> *</span>}
-  
-        <input
-          type="text"
-          placeholder="Additional Notes"
-          {...register('additionalNotes')}
-        />
-  
-        <select {...register('type', { required: true })}>
-          <option value="">Select Type</option>
-          <option value="push">Push</option>
-          <option value="pull">Pull</option>
-          <option value="legs">Legs</option>
-          <option value="cardio">Cardio</option>
-        </select>
-        {errors.type && <span className="error-message"> *</span>}
-  
-        <input type="file" onChange={handleImageChange} />
-  
-        <button type="submit">{updating ? "Update" : buttonText}</button>
-    </form>
+    // <div>
+    <Box className="workout-form-container">
+      <Card className="form-card">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            name="exerciseName"
+            control={control}
+            defaultValue=""
+            rules={{ required: "Exercise name is required" }}
+            render={({ field }) =>
+              <TextField
+                {...field}
+                id="exerciseName"
+                label="Exercise Name"
+                sx={{ my: 2, mx: 0 }}
+                // variant="outlined"
+                error={!!errors.exerciseName}
+                helperText={errors.exerciseName?.message}
+                fullWidth
+              />
+            }
+          />
+
+          <Controller
+            name="description"
+            control={control}
+            defaultValue=""
+            rules={{ required: "Description is required" }}
+            render={({ field }) =>
+              <TextField
+                {...field}
+                id="description"
+                label="Description"
+                sx={{ my: 1}}
+                variant="outlined"
+                multiline
+                error={!!errors.description}
+                helperText={errors.description?.message}
+                fullWidth
+              />
+            }
+          />
+
+          <Controller
+            name="equipment"
+            control={control}
+            defaultValue=""
+            rules={{ required: "Equipment is required" }}
+            render={({ field }) =>
+              <TextField
+                {...field}
+                id="equipment"
+                label="Equipment"
+                sx={{ my: 1 }}
+                variant="outlined"
+                error={!!errors.equipment}
+                helperText={errors.equipment?.message}
+                fullWidth
+              />
+            }
+          />
+
+          <Controller
+            name="difficultyLevel"
+            control={control}
+            defaultValue=""
+            rules={{ required: "Difficulty Level is required" }}
+            render={({ field }) =>
+              <TextField
+                {...field}
+                id="difficultyLevel"
+                label="Difficulty Level"
+                sx={{ my: 1 }}
+                variant="outlined"
+                error={!!errors.difficultyLevel}
+                helperText={errors.difficultyLevel?.message}
+                fullWidth
+              />
+            }
+          />
+
+          <Controller
+            name="duration"
+            control={control}
+            defaultValue=""
+            rules={{ required: "Duration is required" }}
+            render={({ field }) =>
+              <TextField
+                {...field}
+                id="duration"
+                label="Duration"
+                sx={{ my: 1 }}
+                variant="outlined"
+                error={!!errors.duration}
+                helperText={errors.duration?.message}
+                fullWidth
+              />
+            }
+          />
+
+          <Controller
+            name="additionalNotes"
+            control={control}
+            defaultValue=""
+            render={({ field }) =>
+              <TextField
+                {...field}
+                id="additionalNotes"
+                label="Additional Notes"
+                sx={{ my: 1 }}
+                variant="outlined"
+                fullWidth
+              />
+            }
+          />
+
+          <FormControl fullWidth variant="outlined" error={!!errors.type}>
+            <InputLabel id="type-label">Type</InputLabel>
+            <Controller
+              name="type"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Type is required" }}
+              render={({ field }) =>
+                <Select
+                  {...field}
+                  labelId="type-label"
+                  
+                  id="type"
+                  label="Type"
+                >
+                  <MenuItem value=""><em>None</em></MenuItem>
+                  <MenuItem value={"push"}>Push</MenuItem>
+                  <MenuItem value={"pull"}>Pull</MenuItem>
+                  <MenuItem value={"legs"}>Legs</MenuItem>
+                  <MenuItem value={"cardio"}>Cardio</MenuItem>
+                </Select>
+              }
+            />
+            {errors.type && <p className="error-message">{errors.type.message}</p>}
+          </FormControl>
+
+          <Controller
+            control={control}
+            name="file"
+            render={({ field }) => (
+              <Box>
+                <Button variant="outlined" component="label" color="primary" sx={{ py: 1, px: 1 }}>
+                  Upload File
+                  <input
+                    type="file"
+                    hidden
+                    onChange={(e) => {
+                      field.onChange(e.target.files[0]); // inform react-hook-form of the change
+                      setFileName(e.target.files[0].name); // set the file name for display
+                      handleImageChange(e); // your existing file handling function
+                    }}
+                  />
+                </Button>
+                {fileName && <Typography variant="subtitle1">Chosen file: {fileName}</Typography>}
+              </Box>
+            )}
+          />
+
+                          
+
+          <Button type="submit" variant="contained" color="primary">
+            {updating ? "Update" : buttonText}
+          </Button>
+        </form>
+      {/* </div> */}
+
+    </Card>
+     </Box>
   );
 }
 

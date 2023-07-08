@@ -1,10 +1,13 @@
 // import UserData from "./useUserData";
 import React, { useContext } from "react";
 import UserContext from "../contexts/UserContext";
+import LandingPage from "./LandingPage";
 
 const Profile = () => {
   // const { userData } = UserData();
   const userData = useContext(UserContext)
+
+  
 
   return (
       <div>        
@@ -16,6 +19,7 @@ const Profile = () => {
         </div>
       ) : null}
       {/* <button onClick={handleLogout}>Logout</button> */}
+
       </div>
    
   );
