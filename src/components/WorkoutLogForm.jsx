@@ -100,6 +100,7 @@ const WorkoutLogForm = ({ initialValues, onSubmit, buttonText, updating }) => {
                 error={!!errors.workoutDate}
                 helperText={errors.workoutDate?.message}
                 fullWidth
+                InputLabelProps={{shrink: true}}
               />
             }
           />

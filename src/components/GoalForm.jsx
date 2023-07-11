@@ -73,10 +73,12 @@ function GoalForm({ initialValues, onSubmit, buttonText, updating }) {
                 error={!!errors.startDate}
                 helperText={errors.startDate?.message}
                 fullWidth
+                InputLabelProps={{shrink: true}}
+                
               />
-            }
+          }
           />
-
+          
           <Controller
             name="targetDate"
             control={control}
@@ -93,6 +95,7 @@ function GoalForm({ initialValues, onSubmit, buttonText, updating }) {
                 error={!!errors.targetDate}
                 helperText={errors.targetDate?.message}
                 fullWidth
+                InputLabelProps={{shrink: true}}
               />
             }
           />
@@ -143,7 +146,7 @@ function GoalForm({ initialValues, onSubmit, buttonText, updating }) {
             }
           />
 
-          <Button type="su bmit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="primary">
             Create
           </Button>
         </form>

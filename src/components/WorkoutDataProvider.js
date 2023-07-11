@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import WorkoutContext from "../contexts/WorkoutContext";
 import { auth } from '../config/firebase';
 import { onAuthStateChanged } from "firebase/auth";
-import { fetchUserWorkoutCollectionData, fetchBaseWorkoutCollectionData } from './FetchData';
+import { fetchUserSubCollectionData, fetchBaseWorkoutCollectionData } from './FetchData';
 
 const WorkoutDataProvider = ({ children }) => {
-  const [workoutData, setWorkoutData] = useState(null);
+  const [workoutData, setWorkoutData] = useState([]);
   const [pushWorkouts, setPushWorkouts] = useState([])
   const [pullWorkouts, setPullWorkouts] = useState([])
   const [legWorkouts, setLegWorkouts] = useState([])
@@ -18,7 +18,6 @@ const WorkoutDataProvider = ({ children }) => {
           setPushWorkouts(pushWorkoutData)
         })
           
-  
         fetchBaseWorkoutCollectionData("pull").then((pullWorkoutData) => {
           setPullWorkouts(pullWorkoutData)
         })
@@ -40,7 +39,7 @@ const WorkoutDataProvider = ({ children }) => {
   const fetchUserData = async () => {
     try {
         const userId = auth.currentUser.uid;
-        const fetchedUserData = await fetchUserWorkoutCollectionData("users", "workouts", userId)
+        const fetchedUserData = await fetchUserSubCollectionData("users", "workouts", userId)
         setWorkoutData(fetchedUserData);
         // Store user data in local storage
         localStorage.setItem('userData', JSON.stringify(fetchedUserData));

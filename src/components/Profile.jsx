@@ -1,27 +1,49 @@
-// import UserData from "./useUserData";
 import React, { useContext } from "react";
+import { Avatar, Box, Typography, Card, CardContent } from "@mui/material";
 import UserContext from "../contexts/UserContext";
-import LandingPage from "./LandingPage";
 
 const Profile = () => {
-  // const { userData } = UserData();
-  const userData = useContext(UserContext)
+  const { userData } = useContext(UserContext);
 
-  
+   const renderAvatar = () => {
+    if (userData?.profilePicture) {
+      return <Avatar src={userData.profilePicture} alt="Profile Picture" />;
+    } else {
+      // Use a placeholder avatar image or a default image
+      return <Avatar sx={{ mx: 20, width: 56, height: 56}} alt="Profile Picture">E</Avatar>;
+    }
+  };
 
   return (
-      <div>        
-      {userData ? (
-        <div>
-          <h3>{userData.firstName}</h3>
-          <h3>{userData.lastName}</h3>
-          <h3>{userData.email}</h3>
-        </div>
-      ) : null}
-      {/* <button onClick={handleLogout}>Logout</button> */}
-
-      </div>
-   
+    <Card sx={{ maxWidth: 400, mt: 3, mx: 50, backgroundColor: "'#FAF9F6'" }}>
+      <CardContent>
+        <Box  textAlign="center">
+          {userData ? (
+            <>
+              {renderAvatar()}
+              <Typography sx={{ mt: 2, }} variant="h4" gutterBottom>
+                {userData.firstName} {userData.lastName}
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+                {userData.email}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                Bio/About Me: {userData.bio}
+              </Typography>
+            </>
+          ) : (
+            <>
+              <Typography variant="h4" gutterBottom>
+                Welcome!
+              </Typography>
+              <Typography variant="body1">
+                Please log in to view your profile.
+              </Typography>
+            </>
+          )}
+        </Box>
+      </CardContent>
+    </Card>
   );
 };
 

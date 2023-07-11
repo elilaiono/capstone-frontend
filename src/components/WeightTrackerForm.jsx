@@ -116,6 +116,7 @@ const WeightTrackerForm = ({ initialValues, onSubmit, buttonText, updating }) =>
                 error={!!errors.weightDate}
                 helperText={errors.weightDate?.message}
                 fullWidth
+                InputLabelProps={{shrink: true}}
               />
             }
           />

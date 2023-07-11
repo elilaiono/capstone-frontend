@@ -1,5 +1,5 @@
 
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../contexts/UserContext";
 import WorkoutData from './useWorkoutData';
 import Button from '@mui/material/Button';
@@ -20,22 +20,25 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
+import Skeleton from '@mui/material/Skeleton';
 import { auth } from "../config/firebase";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import '../styles/test.css'
+import WorkoutContext from "../contexts/WorkoutContext";
 
 const defaultTheme = createTheme();
 
 export default function Album({ selectedWorkout, setSelectedWorkout, handleClick }) {
   const userData = useContext(UserContext)
+  const [loading, setLoading] = useState(true);
   const { 
     workoutData,
     pushWorkouts,
     pullWorkouts,
     legWorkouts,
     cardioWorkouts
-  } = WorkoutData();
+  } = useContext(WorkoutContext);
 
   const [filterType, setFilterType] = useState("");
   const [expandedId, setExpandedId] = useState(null);
@@ -73,6 +76,12 @@ export default function Album({ selectedWorkout, setSelectedWorkout, handleClick
       console.log(`An error occurred while deleting the workout`);
     }
   };
+
+  useEffect(() => {
+    if (filteredData.length) {
+      setLoading(false);
+    }
+  }, [filteredData]);
   
 
   return (
@@ -132,83 +141,112 @@ export default function Album({ selectedWorkout, setSelectedWorkout, handleClick
             </Stack>
           </Container>
         </Box>
-       
+
         <Container sx={{ py: 8, bgcolor: "#FAF9F6" }} maxWidth="md">
-  <Grid container spacing={4}>
-    {filteredData.map((workout) => (
-      <Grid item key={workout.id} xs={12} sm={6} md={4}>
-        <Card 
-          sx={{ 
-            height: '100%',
-            display: 'flex', 
-            flexDirection: 'column', 
-            "&:hover": {
-              transform: 'none',  // Change this to 'none' or another value to control the hover effect
-            },
-          }}
-        >
-          <CardMedia
-            component="img"
-            sx={{ height: 140 }}  // You might need to adjust this
-            image={workout.imgUrl ? workout.imgUrl : 'https://loremflickr.com/320/240'} loading='lazy'
-            alt={workout.exerciseName}
-          />
-          <CardContent sx={{ flexGrow: 1 }}>
-            <Typography gutterBottom variant="h5" component="h2">
-              {workout.exerciseName}
-            </Typography>
-            <Typography>
-              {workout.description}
-            </Typography>
-            <Collapse in={workout.id === expandedId}>
-              <Typography>
-                Duration: {workout.duration}
-              </Typography>
-              <Typography>
-                Difficulty Level: {workout.difficultyLevel}
-              </Typography>
-              <Typography>
-                Additional Notes: {workout.additionalNotes}
-              </Typography>
-              { workoutData.find(w => w.id === workout.id) && 
-                <CardActions>
-                  <div className="actions">
-                    <div className="button-container">
-                      <Button size="small" onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedWorkout(workout);
-                      }}>Edit</Button>
-                    
-                      <Button size="small" onClick={(e) => {
-                        e.stopPropagation();
-                        deleteWorkout(workout.id);
-                      }}>Delete</Button>
-                    </div>
-                  </div>
-                </CardActions>
+          <Grid container spacing={4}>
+            {loading ? 
+              // Display skeletons when data is being loaded
+              Array.from(new Array(6)).map((_, index) => (
+                <Grid item key={index} xs={12} sm={6} md={4}>
+                  <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                    <Skeleton variant="rectangular" height={140} />
+                    <CardContent>
+                      <Skeleton variant="text" />
+                      <Skeleton variant="text" />
+                      <Skeleton variant="text" />
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))
+            :
+
+            filteredData.map((workout) => (
+              <Grid item key={workout.id} xs={12} sm={6} md={4}>
+                <Card 
+                  sx={{ 
+                    height: '100%',
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    sx={{ height: 140 }}
+                    image={workout.imgUrl ? workout.imgUrl : 'https://loremflickr.com/320/240'} loading='lazy'
+                    alt={workout.exerciseName}
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {workout.exerciseName}
+                    </Typography>
+                    <Typography>
+                      {workout.description}
+                    </Typography>
+                    <Collapse in={workout.id === expandedId}>
+                      <Box sx={{ pt: 2 }}>
+                        <Typography variant="subtitle2" component="span" fontWeight="bold">
+                          Duration:
+                        </Typography>
+                        <Typography variant="subtitle2" component="span">
+                          {" " + workout.duration}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ pt: 2 }}>
+                        <Typography variant="subtitle2" component="span" fontWeight="bold">
+                          Difficulty Level:
+                        </Typography>
+                        <Typography variant="subtitle2" component="span">
+                          {" " + workout.difficultyLevel}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ pt: 2 }}>
+                        <Typography variant="subtitle2" component="span" fontWeight="bold">
+                          Additional Notes:
+                        </Typography>
+                        <Typography variant="subtitle2" component="span">
+                          {" " + workout.additionalNotes}
+                        </Typography>
+                      </Box>
+                      { workoutData.find(w => w.id === workout.id) && 
+                        <CardActions sx={{ pt: 2 }}>
+                          <div className="actions">
+                            <div className="button-container">
+                              <Button size="small" onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedWorkout(workout);
+                              }}>Edit</Button>
+            
+                              <Button size="small" onClick={(e) => {
+                                e.stopPropagation();
+                                deleteWorkout(workout.id);
+                              }}>Delete</Button>
+                            </div>
+                          </div>
+                        </CardActions>
+                      }
+                    </Collapse>
+                  </CardContent>
+                  <CardActions>
+                    <IconButton
+                      onClick={() => setExpandedId(workout.id === expandedId ? null : workout.id)}
+                      sx={{ 
+                        transform: workout.id === expandedId ? 'rotate(180deg)' : 'none', 
+                        transition: 'transform 0.3s',
+                        mx: 13,
+                      }}
+                    >
+                      <ExpandMoreIcon />
+                    </IconButton>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))
+            
+
               }
-            </Collapse>
-          </CardContent>
-          <IconButton
-            onClick={(event) => {
-              event.stopPropagation();
-              setExpandedId(workout.id === expandedId ? null : workout.id);
-            }}
-            sx={{ 
-              transform: workout.id === expandedId ? 'rotate(180deg)' : 'none', 
-              transition: 'transform 0.3s',
-              "&:hover": {
-                transform: 'none',
-              },
-            }}
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </Card>
-      </Grid>
-    ))}
-  </Grid>
-</Container>
+          </Grid>
+        </Container>
+
 
       </main>
     </ThemeProvider>

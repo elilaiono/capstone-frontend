@@ -154,6 +154,7 @@ const PersonalRecordForm = ({ initialValues, onSubmit, buttonText, updating }) =
                 error={!!errors.recordDate}
                 helperText={errors.recordDate?.message}
                 fullWidth
+                InputLabelProps={{shrink: true}}
               />
             }
           />

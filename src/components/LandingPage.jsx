@@ -41,7 +41,7 @@ const features = [
 
 const LandingPage = () => {
 
-  const userData = useContext(UserContext)
+  const { userData } = useContext(UserContext)
 
 
   return (
@@ -58,11 +58,16 @@ const LandingPage = () => {
               <Typography variant="h5" align="center" color="textSecondary" paragraph>
                 A better way to manage your fitness journey.
               </Typography>
-              <Box mt={4} display="flex" justifyContent="center">
+              {/* <Box mt={4} display="flex" justifyContent="center">
+                { userData ? null :
                 <Button variant="contained" color="primary" component={RouterLink} to="/login">
                   Get Started
                 </Button>
-              </Box>
+                }
+              </Box> */}
+              <Button sx={{ mx: "auto ", }} variant="contained" color="primary"  component={RouterLink} to="/login">
+                  Get Started
+                </Button>
             </Container>
           </HeroContent>
 

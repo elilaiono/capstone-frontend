@@ -13,13 +13,13 @@ function WorkoutForm({ initialValues, onSubmit, buttonText, handleImageChange, u
     reset(initialValues);
   }, [initialValues, reset]);
 
-  const onChange = (files) => {
-    if (files.length) {
-      setFileName(files[0].name);
-    } else {
-      setFileName("");
-    }
-  };
+  // const onChange = (files) => {
+  //   if (files.length) {
+  //     setFileName(files[0].name);
+  //   } else {
+  //     setFileName("");
+  //   }
+  // };
 
   return (
     // <div>

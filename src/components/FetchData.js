@@ -14,7 +14,7 @@ export const fetchUserCollectionData = async (collectionName, userId) => {
   }
 };
 
-export const fetchUserWorkoutCollectionData = async (collectionName, subCollectionName = null, userId = null) => {
+export const fetchUserSubCollectionData = async (collectionName, subCollectionName = null, userId = null) => {
   try {
     let url = `http://localhost:8080/${collectionName}/${subCollectionName}/${userId}`;
 

@@ -170,6 +170,7 @@ const UploadProgressPicForm = ({ initialValues, onSubmit, buttonText, updating }
                 error={!!errors.picDate}
                 helperText={errors.picDate?.message}
                 fullWidth
+                InputLabelProps={{shrink: true}}
               />
             }
           />

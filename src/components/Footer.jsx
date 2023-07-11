@@ -1,15 +1,3 @@
-// import '../styles/footer.css'
-
-// const Footer = () => {
-//     return ( 
-//         <div className="footer">
-//             <p>&copy; 2023 Elijah Aiono. All rights reserved.</p>
-//         </div>
-//      );
-// }
- 
-// export default Footer;
-
 import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -17,21 +5,20 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="text.secondary">
-      {'Copyright © '}
+    <Typography variant="body2" color="text.secondary" align="center">
+      {'© '}
       <Link color="inherit" href="https://mui.com/">
         Apex Lifter
       </Link>{' '}
       {new Date().getFullYear()}
-      {'.'}
     </Typography>
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function StickyFooter() {
@@ -45,19 +32,22 @@ export default function StickyFooter() {
         }}
       >
         <CssBaseline />
-        <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="sm">
-          <Typography variant="h2" component="h1" gutterBottom>
+        <Container component="main" sx={{ mt: 18, mb: 2 }} maxWidth="sm">
+          <Typography variant="h4" component="h1" gutterBottom>
             Apex Lifter
           </Typography>
-          <Typography variant="h5" component="h2" gutterBottom>
-            {'Put something useful here'}
+          <Typography variant="subtitle1" component="h2" gutterBottom>
+            Your Ultimate Fitness Companion
           </Typography>
-          <Typography variant="body1">put something here</Typography>
+          <Typography variant="body2">
+            Track your fitness journey, set goals, and make progress with Apex Lifter.
+          </Typography>
         </Container>
+
         <Box
           component="footer"
           sx={{
-            py: 3,
+            py: 2,
             px: 2,
             mt: 'auto',
             backgroundColor: (theme) =>
@@ -66,12 +56,29 @@ export default function StickyFooter() {
                 : theme.palette.grey[800],
           }}
         >
-          {/* <Container maxWidth="sm">
-            <Typography variant="body1">
-              My sticky footer can be found here.
-            </Typography>
-        </Container> */}
-        <Copyright />
+          <Container maxWidth="sm">
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={4}>
+                <Typography variant="subtitle2" gutterBottom>About Us</Typography>
+                <Typography variant="body2">We are a group of fitness enthusiasts dedicated to building a platform that supports your fitness journey.</Typography>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <Typography variant="subtitle2" gutterBottom>Contact Us</Typography>
+                <Typography variant="body2">
+                  Email: info@apexlifter.com<br />
+                  Phone: 123-456-7890
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <Typography variant="subtitle2" gutterBottom>Helpful Links</Typography>
+                <Link color="inherit" href="/terms">Terms of Service</Link><br />
+                <Link color="inherit" href="/privacy">Privacy Policy</Link>
+              </Grid>
+            </Grid>
+          </Container>
+          <Box sx={{ mt: 2 }} textAlign="center">
+            <Copyright />
+          </Box>
         </Box>
       </Box>
     </ThemeProvider>

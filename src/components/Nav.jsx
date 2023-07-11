@@ -107,7 +107,7 @@ import UserContext from '../contexts/UserContext';
 
 const Nav = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const userData = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -123,7 +123,10 @@ const Nav = () => {
 
   const handleLogout = async () => {
     try {
+      // console.log(auth.currentUser)
       await signOut(auth);
+      // localStorage.removeItem('userData');
+      console.log(auth.currentUser)
       navigate('/');
       window.location.reload();
     } catch (error) {
