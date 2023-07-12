@@ -1,6 +1,7 @@
 export const fetchUserCollectionData = async (collectionName, userId) => {
   try {
-    const response = await fetch(`http://localhost:8080/${collectionName}/${userId}`);
+    const baseUrl = process.env.REACT_APP_BASE_URL
+    const response = await fetch(`${baseUrl}/${collectionName}/${userId}`);
     if (response.ok) {
       const collectionData = await response.json();
       // Return the collection data
@@ -16,7 +17,8 @@ export const fetchUserCollectionData = async (collectionName, userId) => {
 
 export const fetchUserSubCollectionData = async (collectionName, subCollectionName = null, userId = null) => {
   try {
-    let url = `http://localhost:8080/${collectionName}/${subCollectionName}/${userId}`;
+    const baseUrl = process.env.REACT_APP_BASE_URL
+    let url = `${baseUrl}/${collectionName}/${subCollectionName}/${userId}`;
 
     const response = await fetch(url);
 
@@ -35,7 +37,8 @@ export const fetchUserSubCollectionData = async (collectionName, subCollectionNa
 
 export const fetchBaseWorkoutCollectionData = async (collectionName) => {
   try {
-    const response = await fetch(`http://localhost:8080/${collectionName}`);
+    const baseUrl = process.env.REACT_APP_BASE_URL
+    const response = await fetch(`${baseUrl}/${collectionName}`);
     if (response.ok) {
       const collectionData = await response.json();
       // Return the collection data
