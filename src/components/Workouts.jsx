@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { auth } from '../config/firebase';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import WorkoutCard from "./WorkoutCards";
@@ -8,7 +8,8 @@ import '../styles/form.css'
 import { Dialog, DialogTitle, DialogContent, Button } from '@mui/material'
 
 const Workouts = ({}) => {
-  const baseUrl = process.env.REACT_APP_BASE_URL
+  // const baseUrl = process.env.REACT_APP_BASE_URL
+  const baseUrl = "https://apex-lifter-backend.onrender.com"
 
   const [image, setImage] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);

@@ -6,7 +6,8 @@ import axios from "axios";
 
 const SignUp = () => {
   const navigate = useNavigate()
-  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const baseUrl = "https://apex-lifter-backend.onrender.com";
+  // const baseUrl = process.env.REACT_APP_BASE_URL;
   const { handleSubmit, control, formState: { errors } } = useForm();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [emailExists, setEmailExists] = useState(false);
