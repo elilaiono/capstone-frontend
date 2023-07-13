@@ -12,7 +12,7 @@ function Copyright() {
     <Typography variant="body2" color="text.secondary" align="center">
       {'© '}
       <Link color="inherit" href="https://mui.com/">
-        Apex Lifter
+        Apex Lifters
       </Link>{' '}
       {new Date().getFullYear()}
     </Typography>
@@ -34,13 +34,13 @@ export default function StickyFooter() {
         <CssBaseline />
         <Container component="main" sx={{ mt: 18, mb: 2 }} maxWidth="sm">
           <Typography variant="h4" component="h1" gutterBottom>
-            Apex Lifter
+            Apex Lifters
           </Typography>
           <Typography variant="subtitle1" component="h2" gutterBottom>
             Your Ultimate Fitness Companion
           </Typography>
           <Typography variant="body2">
-            Track your fitness journey, set goals, and make progress with Apex Lifter.
+            Track your fitness journey, set goals, and make progress with Apex Lifters.
           </Typography>
         </Container>
 
@@ -53,7 +53,7 @@ export default function StickyFooter() {
             backgroundColor: (theme) =>
               theme.palette.mode === 'light'
                 ? theme.palette.grey[200]
-                : theme.palette.grey[800],
+                : theme.palette.grey[700],
           }}
         >
           <Container maxWidth="sm">

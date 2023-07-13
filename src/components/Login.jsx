@@ -12,7 +12,7 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/");
-      console.log(email);
+      // console.log(email);
     } catch (error) {
       console.error(error);
     }
@@ -21,7 +21,7 @@ const Login = () => {
   return (
     <div style={{ backgroundColor: "#F8F8F8" }}>
       <Box className="login-container" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <Card className="form-card"> {/* Add the "form-card" class */}
+        <Card className="form-card">
           <Typography variant="h5" component="h2" sx={{ textAlign: 'center', mb: 3 }}>
             Login
           </Typography>

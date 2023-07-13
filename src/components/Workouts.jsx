@@ -1,19 +1,15 @@
 
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { useForm } from "react-hook-form";
 import { auth } from '../config/firebase';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import WorkoutCard from "./WorkoutCards";
 import WorkoutForm from "./WorkoutForm";
-import UserContext from "../contexts/UserContext";
 import '../styles/form.css'
 import { Dialog, DialogTitle, DialogContent, Button } from '@mui/material'
 
 const Workouts = ({}) => {
   const baseUrl = process.env.REACT_APP_BASE_URL
-  const userData = useContext(UserContext)
-  const { reset } = useForm()
-  
+
   const [image, setImage] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedWorkout, setSelectedWorkout] = useState(null);
@@ -23,10 +19,6 @@ const Workouts = ({}) => {
 
   const [showForm, setShowForm] = useState(false); // state to track whether form is shown
   const formRef = useRef(null); // reference to the form
-
-  // useEffect(() => {
-  //   // console.log('selectedWorkout changed', selectedWorkout);
-  // }, [selectedWorkout]);
 
   const handleClick = (workout) => {
     setSelectedWorkout(workout)

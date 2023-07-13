@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { TextField, Button, Typography, Card, Box, Dialog, DialogTitle, DialogContent } from "@mui/material";
 
-const PersonalRecordForm = ({ initialValues, onSubmit, buttonText, updating }) => {
+const PersonalRecordForm = ({ initialValues, onSubmit }) => {
   const { handleSubmit, formState: { errors }, control, reset } = useForm();
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);

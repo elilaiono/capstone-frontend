@@ -1,9 +1,9 @@
 
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { TextField, Button, Typography, Card, Box, Input, Dialog, DialogTitle, DialogContent } from "@mui/material";
+import { TextField, Button, Typography, Card, Box, Dialog, DialogTitle, DialogContent } from "@mui/material";
 
-const UploadProgressPicForm = ({ initialValues, onSubmit, buttonText, updating }) => {
+const UploadProgressPicForm = ({ initialValues, onSubmit }) => {
   const { handleSubmit, formState: { errors }, control, reset } = useForm();
   const [image, setImage] = useState(null);
   const [fileName, setFileName] = useState("");
@@ -62,7 +62,6 @@ const UploadProgressPicForm = ({ initialValues, onSubmit, buttonText, updating }
                     }}
                   />
                 </Button>
-                {/* {fileName && <Typography variant="subtitle1">Chosen file: {fileName}</Typography>} */}
               </Box>
             )}
           />

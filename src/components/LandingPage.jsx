@@ -73,6 +73,7 @@ const LandingPage = () => {
           {/* Features Section */}
           <CardGrid maxWidth="md">
             <Grid container spacing={4}>
+              
               {/* Workout Card */}
               <Grid item xs={12} sm={6} md={4}>
                 <StyledCard>

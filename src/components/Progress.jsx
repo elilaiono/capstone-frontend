@@ -1,7 +1,6 @@
 
 import React, { useState, useContext, useRef } from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
-import { styled } from '@mui/system';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import UserContext from "../contexts/UserContext";
@@ -125,17 +124,15 @@ const Progress = () => {
     
       if (res.status === 200) {
         console.log(successMessage);
-        reset(); // Resetting the form
-        // You may also want to add some action to refresh your goals list here
+        reset(); 
       } else {
         console.log(`An error occurred:`, res.status);
-      //   setMessage("Some error occurred");
       }
     };
   
   return (
 <ThemeProvider theme={theme}>
-  <Container>
+  <Container >
     <Box my={4}>
       <Typography variant="h2" align="center" gutterBottom color="black">
         Progress Tracker
@@ -150,7 +147,7 @@ const Progress = () => {
     { userData ? (
       <Box>
         {/* Goal Section */}
-        <Card sx={{ my: 2, p: 2, backgroundColor: '#F8F8F8', }}>
+        <Card sx={{ my: 2, p: 2, }}>
           <CardContent>
             <section ref={goalFormRef}>
               <Typography variant="h4" gutterBottom color="black">
@@ -169,7 +166,7 @@ const Progress = () => {
         </Card>
 
         {/* Personal Record Section */}
-        <Card sx={{ my: 2, p: 2, backgroundColor: '#F8F8F8' }}>
+        <Card sx={{ my: 2, p: 2, }}>
           <CardContent>
             <section ref={personalRecordFormRef}>
               <Typography variant="h4" gutterBottom color="black">
@@ -188,7 +185,7 @@ const Progress = () => {
         </Card>
 
         {/* Progress Picture Section */}
-        <Card sx={{ my: 2, p: 2, backgroundColor: '#F8F8F8' }}>
+        <Card sx={{ my: 2, p: 2 }}>
           <CardContent>
             <section ref={progressPicFormRef}>
               <Typography variant="h4" gutterBottom color="black">
@@ -207,7 +204,7 @@ const Progress = () => {
         </Card>
 
         {/* Weight Tracker Section */}
-        <Card sx={{ my: 2, p: 2, backgroundColor: '#F8F8F8' }}>
+        <Card sx={{ my: 2, p: 2, }}>
           <CardContent>
             <section ref={weightFormRef}>
               <Typography variant="h4" gutterBottom color="black">
@@ -226,7 +223,7 @@ const Progress = () => {
         </Card>
 
         {/* Workout Log Section */}
-        <Card sx={{ my: 2, p: 2, backgroundColor: "#F8F8F8" }}>
+        <Card sx={{ my: 2, p: 2, }}>
           <CardContent>
             <section ref={workoutLogFormRef}>
               <Typography variant="h4" gutterBottom color="black">
@@ -245,18 +242,22 @@ const Progress = () => {
         </Card>
       </Box>
     ) : (
-      <Box my={4}>
-        <Typography variant="h4" align="center" gutterBottom color="primary.main">
-          Please Log in to Start Tracking Your Progress
-        </Typography>
-        <Typography variant="body1" align="center" gutterBottom color="text.secondary">
-          With an account, you can start logging your workouts, weights, personal records, and progress pictures. 
-          Not a member yet? Sign up and start your fitness journey with us!
-        </Typography>
-      </Box>
-    )}
-  </Container>
-</ThemeProvider>
+      <Card sx={{ my: 2, p: 2, margin: '0 auto', maxWidth: 600 }}>
+            <CardContent>
+              <Box my={4}>
+                <Typography variant="h6" align="center" gutterBottom color="black">
+                  Please Log in to Start Tracking Your Progress
+                </Typography>
+                <Typography variant="body1" align="center" gutterBottom color="text.secondary">
+                  With an account, you can start logging your workouts, weights, personal records, and progress pictures. 
+                  Not a member yet? Sign up and start your fitness journey with us!
+                </Typography>
+              </Box>
+            </CardContent>
+          </Card>
+        )}
+      </Container>
+    </ThemeProvider>
 
   );
 }

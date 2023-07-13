@@ -14,7 +14,7 @@ import SignUp from './components/SignUp';
 const App = () => {
 
   return (
-    <div >
+    <div style={{ backgroundColor: '#F8F8F8'}}>
       <UserDataProvider>
         <WorkoutDataProvider>
           <Nav />

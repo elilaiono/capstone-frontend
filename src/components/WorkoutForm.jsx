@@ -13,21 +13,6 @@ function WorkoutForm({ initialValues, onSubmit, buttonText, handleImageChange, u
     reset(initialValues);
   }, [initialValues, reset]);
 
-  // const handleSubmitWithSuccess = async (data) => {
-  //   await onSubmit(data);
-  //   setShowSuccessModal(true);
-  //   if (onSuccess) {
-  //     onSuccess(); // Call the onSuccess callback passed from the parent component
-  //   }
-  // };
-
-  // const onChange = (files) => {
-  //   if (files.length) {
-  //     setFileName(files[0].name);
-  //   } else {
-  //     setFileName("");
-  //   }
-  // };
 
   return (
     // <div>

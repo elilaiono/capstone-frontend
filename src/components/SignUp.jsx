@@ -1,18 +1,25 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, Card, Typography, Box, Dialog, DialogContent, DialogTitle, Link } from "@mui/material";
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 const SignUp = () => {
-  const baseUrl = process.env.REACT_APP_BASE_URL
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const baseUrl = process.env.REACT_APP_BASE_URL;
   const { handleSubmit, control, formState: { errors } } = useForm();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [emailExists, setEmailExists] = useState(false);
+  const [emailError, setEmailError] = useState('');
 
   const onSubmit = async ({ firstName, lastName, email, password }) => {
     try {
+      if (emailExists) {
+        setEmailError('Email is already in use');
+        console.log('Email already exists');
+        return;
+      }
+
       const response = await axios.post(`${baseUrl}/users/add`, {
         firstName,
         lastName,
@@ -21,10 +28,24 @@ const SignUp = () => {
       });
 
       // Handle the response or show success message as needed
-      console.log(response.data);
-      console.log(email)
+      // console.log(response.data);
+      // console.log(email);
 
       setShowSuccessModal(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const checkEmailExists = async (email) => {
+    try {
+      const response = await axios.get(`${baseUrl}/users/check-email`, {
+        params: {
+          email: email
+        },
+      });
+
+      setEmailExists(response.data.exists);
     } catch (error) {
       console.error(error);
     }
@@ -38,7 +59,7 @@ const SignUp = () => {
   return (
     <div style={{ backgroundColor: "#F8F8F8" }}>
       <Box className="login-container" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <Card className="form-card" sx={{ maxWidth: 610 }}>
+        <Card className="form-card" sx={{ maxWidth: 600, margin: 2 }}>
           <Typography variant="h5" component="h2" sx={{ textAlign: 'center', mb: 3 }}>
             Sign Up
           </Typography>
@@ -89,9 +110,10 @@ const SignUp = () => {
                   label="Email"
                   type="email"
                   sx={{ mb: 2 }}
-                  error={!!errors.email}
+                  error={!!errors.email || emailError}
                   helperText={errors.email && "Email is required"}
                   fullWidth
+                  onBlur={(e) => checkEmailExists(e.target.value)}
                 />
               )}
             />
@@ -119,6 +141,12 @@ const SignUp = () => {
             </Button>
           </form>
 
+          {emailExists && (
+            <Typography variant="body2" sx={{ mt: 2, color: 'error.main' }}>
+              Email already exists. Please choose a different email.
+            </Typography>
+          )}
+
           <Typography sx={{ mt: 2, textAlign: 'center' }}>
             Already have an account? <Link component={RouterLink} to="/login">Sign In</Link>
           </Typography>
@@ -139,4 +167,5 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
 

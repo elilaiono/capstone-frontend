@@ -30,7 +30,7 @@ const ProgressPictureCard = () => {
           }}>
             <CardMedia
               component="img"
-              height="140"
+              height="250"
               loading='lazy'
               image={picture.imgUrl}
               alt="progress picture"

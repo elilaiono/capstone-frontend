@@ -3,7 +3,7 @@ import LandingPage from './LandingPage'
 const Home = () => {
 
   return (
-    <div style={{ backgroundColor: "#fafafa" }}>
+    <div >
     <div className='home-container'>
       <LandingPage />
     </div>

@@ -27,8 +27,12 @@ const Profile = () => {
               <Typography variant="h6" gutterBottom>
                 {userData.email}
               </Typography>
+              <Typography variant="h6">
+                Bio/About Me:
+              </Typography>
               <Typography variant="body1" gutterBottom>
-                Bio/About Me: {userData.bio}
+                I'm a gym enthusiast who's always looking to improve. I love to spend time with my wife,
+                play video games and the guitar, and I love to lift heavy weights!
               </Typography>
             </>
           ) : (

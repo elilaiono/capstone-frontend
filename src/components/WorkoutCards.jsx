@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../contexts/UserContext";
-import WorkoutData from './useWorkoutData';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -23,7 +22,6 @@ import Skeleton from '@mui/material/Skeleton';
 import { auth } from "../config/firebase";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import '../styles/test.css'
 import WorkoutContext from "../contexts/WorkoutContext";
 
 const defaultTheme = createTheme();
