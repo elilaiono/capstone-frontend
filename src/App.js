@@ -1,8 +1,4 @@
-import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import './App.css';
-import { db } from './config/firebase'
-import { getDocs, collection } from 'firebase/firestore';
 import UserDataProvider from './components/UserDataProvider';
 import WorkoutDataProvider from './components/WorkoutDataProvider';
 
@@ -16,26 +12,6 @@ import Footer from './components/Footer';
 import SignUp from './components/SignUp';
 
 const App = () => {
-  const [userList, setUserList] = useState([]);
-
-  const userCollectionRef = collection(db, "users")
-
-  useEffect(() => {
-    const getUserList = async () => {
-      try {
-        const data = await getDocs(userCollectionRef);
-        const filteredData = data.docs.map((doc) => ({
-          ...doc.data(), 
-          id: doc.id}))
-        // console.log(filteredData)
-        setUserList(filteredData)
-      } catch (error) {
-        console.error(error)
-      }
-    };
-
-    getUserList();
-  }, []);
 
   return (
     <div >

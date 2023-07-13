@@ -7,6 +7,13 @@ const WorkoutLogCard = ({ handleEditClick }) => {
   const { workoutLogData } = useContext(UserContext);
   const [expandedId, setExpandedId] = React.useState(null);
 
+  const convertDate = (workoutLog) => {
+    const timestamp = workoutLog.workoutDate;
+    const date = new Date(timestamp._seconds * 1000)
+    const formattedDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
+    return formattedDate;
+ }
+
   return (
     <Grid container spacing={4}>
       {workoutLogData.map((workoutLog) => (
@@ -26,7 +33,7 @@ const WorkoutLogCard = ({ handleEditClick }) => {
                 {workoutLog.workout}
               </Typography>
               <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                Workout Date: {new Date(Date.parse(workoutLog.workoutDate)).toLocaleDateString()}
+                Workout Date: {convertDate(workoutLog)}
               </Typography>
             </CardContent>
             <CardActions sx={{ 

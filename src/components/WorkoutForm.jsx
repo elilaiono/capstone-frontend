@@ -1,17 +1,25 @@
 
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Box, Card, Typography } from "@mui/material";
+import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Box, Card, Typography,
+ } from "@mui/material";
 
-function WorkoutForm({ initialValues, onSubmit, buttonText, handleImageChange, updating }) {
-  const { register, handleSubmit, formState: { errors }, control, reset } = useForm();
+function WorkoutForm({ initialValues, onSubmit, buttonText, handleImageChange, updating, onSuccess }) {
+  const { handleSubmit, formState: { errors }, control, reset,} = useForm();
   const [fileName, setFileName] = useState("");
-
 
   // reset form values when initialValues change
   useEffect(() => {
     reset(initialValues);
   }, [initialValues, reset]);
+
+  // const handleSubmitWithSuccess = async (data) => {
+  //   await onSubmit(data);
+  //   setShowSuccessModal(true);
+  //   if (onSuccess) {
+  //     onSuccess(); // Call the onSuccess callback passed from the parent component
+  //   }
+  // };
 
   // const onChange = (files) => {
   //   if (files.length) {
@@ -36,7 +44,7 @@ function WorkoutForm({ initialValues, onSubmit, buttonText, handleImageChange, u
                 {...field}
                 id="exerciseName"
                 label="Exercise Name"
-                sx={{ my: 2, mx: 0 }}
+                sx={{ my: 1 }}
                 // variant="outlined"
                 error={!!errors.exerciseName}
                 helperText={errors.exerciseName?.message}
@@ -149,6 +157,7 @@ function WorkoutForm({ initialValues, onSubmit, buttonText, handleImageChange, u
                 <Select
                   {...field}
                   labelId="type-label"
+                sx={{ my: 1 }}
                   
                   id="type"
                   label="Type"
@@ -167,10 +176,11 @@ function WorkoutForm({ initialValues, onSubmit, buttonText, handleImageChange, u
           <Controller
             control={control}
             name="file"
+            defaultValue={initialValues?.file || null}
             render={({ field }) => (
               <Box>
-                <Button variant="outlined" component="label" color="primary" sx={{ py: 1, px: 1 }}>
-                  Upload File
+                <Button variant="outlined" component="label" color="primary" sx={{ mt: 1, mb: 2,  }}>
+                  Upload Image
                   <input
                     type="file"
                     hidden
@@ -188,7 +198,7 @@ function WorkoutForm({ initialValues, onSubmit, buttonText, handleImageChange, u
 
                           
 
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit" fullWidth sx={{ mt: 2 }} variant="contained" color="primary">
             {updating ? "Update" : buttonText}
           </Button>
         </form>

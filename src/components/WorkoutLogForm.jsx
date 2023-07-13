@@ -1,69 +1,17 @@
-// import React, { useState } from 'react';
-// import { useForm } from 'react-hook-form';
-// import { auth } from '../config/firebase';
-
-// const WorkoutLogForm = () => {
-//   const { register, handleSubmit, formState: { errors }, reset } = useForm();
-// //   const [message, setMessage] = useState("");
-//   const baseUrl = process.env.REACT_APP_BASE_URL
-
-//   const onSubmit = async (data) => {
-//     const apiUrl = `${baseUrl}/users/workout-logs/add`;
-//     const method = "POST";
-//     const user = {
-//       ...data,
-//       userId: auth?.currentUser?.uid
-//     };
-    
-//     let res = await fetch(apiUrl, {
-//       method: method,
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(user),
-//     });
-  
-//     if (res.status === 200) {
-//       console.log(`Workout Log was created successfully`);
-//     //   setMessage("Goal created successfully");
-//       reset(); // Resetting the form
-//       // You may also want to add some action to refresh your goals list here
-//     } else {
-//       console.log(`An error occurred:`, res.status)
-//     //   setMessage("Some error occurred");
-//     }
-//   };
-  
-
-//   return (
-//     <div className="workout-form-container">
-//     <div className="form-card">
-//       <form onSubmit={handleSubmit(onSubmit)}>
-//         <label htmlFor="workoutDate">Workout Date {errors.workoutDate && <span className="error-message">*</span>}</label>
-//         <input id="workoutDate" {...register("workoutDate", { required: true })} type="date" />
-  
-//         <label htmlFor="workout">Workout {errors.workout && <span className="error-message">*</span>}</label>
-//         <input id="workout" {...register("workout", { required: true })} placeholder="Workout" />
-  
-//         <label htmlFor="notes">Notes</label>
-//         <textarea id="notes" {...register("notes")} placeholder="Notes"></textarea>
-  
-//         <button type="submit">Submit</button>
-//       </form>
-//     </div>
-//   </div>
-  
-//   );
-// };
-
-// export default WorkoutLogForm;
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { TextField, Button, Typography, Card, Box } from "@mui/material";
+import { TextField, Button, Typography, Card, Box, Dialog, DialogTitle, DialogContent } from "@mui/material";
 
 const WorkoutLogForm = ({ initialValues, onSubmit, buttonText, updating }) => {
   const { handleSubmit, formState: { errors }, control, reset } = useForm();
+
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    window.location.reload();
+    window.scrollTo(0, 0);
+  };
 
   // reset form values when initialValues change
   useEffect(() => {
@@ -74,7 +22,8 @@ const WorkoutLogForm = ({ initialValues, onSubmit, buttonText, updating }) => {
     if (onSubmit) {
       await onSubmit(data);
     }
-    reset();  // reset the form after submission
+    reset();
+    setShowSuccessModal(true)
   }
 
   return (
@@ -146,6 +95,15 @@ const WorkoutLogForm = ({ initialValues, onSubmit, buttonText, updating }) => {
           </Button>
         </form>
       </Card>
+      <Dialog open={showSuccessModal} onClose={handleSuccessModalClose}>
+        <DialogTitle>Success</DialogTitle>
+        <DialogContent>
+          Your Workout was successfully logged!
+          <Button variant="contained" color="primary" onClick={handleSuccessModalClose} fullWidth sx={{ mt: 2 }}>
+            Close
+          </Button>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };

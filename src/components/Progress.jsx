@@ -150,7 +150,7 @@ const Progress = () => {
     { userData ? (
       <Box>
         {/* Goal Section */}
-        <Card sx={{ my: 2, p: 2, backgroundColor: '#FAF9F6', }}>
+        <Card sx={{ my: 2, p: 2, backgroundColor: '#F8F8F8', }}>
           <CardContent>
             <section ref={goalFormRef}>
               <Typography variant="h4" gutterBottom color="black">
@@ -169,10 +169,10 @@ const Progress = () => {
         </Card>
 
         {/* Personal Record Section */}
-        <Card sx={{ my: 2, p: 2, backgroundColor: '#FAF9F6' }}>
+        <Card sx={{ my: 2, p: 2, backgroundColor: '#F8F8F8' }}>
           <CardContent>
             <section ref={personalRecordFormRef}>
-              <Typography variant="h4" gutterBottom color="primary.main">
+              <Typography variant="h4" gutterBottom color="black">
                 Personal Records
               </Typography>
               <Typography variant="body1" gutterBottom color="text.test">
@@ -188,10 +188,10 @@ const Progress = () => {
         </Card>
 
         {/* Progress Picture Section */}
-        <Card sx={{ my: 2, p: 2, backgroundColor: '#FAF9F6' }}>
+        <Card sx={{ my: 2, p: 2, backgroundColor: '#F8F8F8' }}>
           <CardContent>
             <section ref={progressPicFormRef}>
-              <Typography variant="h4" gutterBottom color="primary.main">
+              <Typography variant="h4" gutterBottom color="black">
                 Progress Pictures
               </Typography>
               <Typography variant="body1" gutterBottom color="text.test">
@@ -207,10 +207,10 @@ const Progress = () => {
         </Card>
 
         {/* Weight Tracker Section */}
-        <Card sx={{ my: 2, p: 2, backgroundColor: '#FAF9F6' }}>
+        <Card sx={{ my: 2, p: 2, backgroundColor: '#F8F8F8' }}>
           <CardContent>
             <section ref={weightFormRef}>
-              <Typography variant="h4" gutterBottom color="primary">
+              <Typography variant="h4" gutterBottom color="black">
                 Weight Tracker
               </Typography>
               <Typography variant="body1" gutterBottom color="text.secondary">
@@ -226,10 +226,10 @@ const Progress = () => {
         </Card>
 
         {/* Workout Log Section */}
-        <Card sx={{ my: 2, p: 2, backgroundColor: "#FAF9F6" }}>
+        <Card sx={{ my: 2, p: 2, backgroundColor: "#F8F8F8" }}>
           <CardContent>
             <section ref={workoutLogFormRef}>
-              <Typography variant="h4" gutterBottom color="primary.main">
+              <Typography variant="h4" gutterBottom color="black">
                 Workout Logs
               </Typography>
               <Typography variant="body1" gutterBottom color="black">

@@ -5,6 +5,13 @@ import UserContext from '../contexts/UserContext';
 const WeightTrackerCard = () => {
   const { weightData } = useContext(UserContext);
 
+  const convertDate = (weightEntry) => {
+    const timestamp = weightEntry.weightDate;
+    const date = new Date(timestamp._seconds * 1000)
+    const formattedDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
+    return formattedDate;
+ }
+
   return (
     <Grid container spacing={4}>
       {weightData.map((weightEntry) => (
@@ -24,13 +31,12 @@ const WeightTrackerCard = () => {
                 {weightEntry.weight} lbs
               </Typography>
               <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                {new Date(Date.parse(weightEntry.weightDate)).toLocaleDateString()}
+                {convertDate(weightEntry)}
               </Typography>
             </CardContent>
           </Card>
         </Grid>
       ))}
-
     </Grid>
   );
 }

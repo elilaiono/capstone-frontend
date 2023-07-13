@@ -7,6 +7,20 @@ const GoalCard = ({ handleEditClick }) => {
   const { goalData } = useContext(UserContext);
   const [expandedId, setExpandedId] = React.useState(null);
 
+  const convertStartDate = (goal) => {
+     const timestamp = goal.startDate;
+     const date = new Date(timestamp._seconds * 1000)
+     const formattedDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
+     return formattedDate;
+  }
+
+  const convertTargetDate = (goal) => {
+     const timestamp = goal.targetDate;
+     const date = new Date(timestamp._seconds * 1000)
+     const formattedDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
+     return formattedDate;
+  }
+
   return (
     <Grid container spacing={4}>
       {goalData.map((goal) => (
@@ -19,7 +33,7 @@ const GoalCard = ({ handleEditClick }) => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            backgroundColor: "white" 
+            backgroundColor: "white",
 
           }}>
             <CardContent>
@@ -30,7 +44,7 @@ const GoalCard = ({ handleEditClick }) => {
                 {goal.title}
               </Typography>
               <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                Target Date: {new Date(Date.parse(goal.targetDate)).toLocaleDateString()}
+                Target Date: {convertTargetDate(goal)}
               </Typography>
             </CardContent>
             <CardActions sx={{ 
@@ -50,11 +64,12 @@ const GoalCard = ({ handleEditClick }) => {
             <Collapse in={goal.id === expandedId}>
               <CardContent>
               <Typography variant="body2">
-                <span style={{fontWeight: "bold"}}>Start Date:</span> {new Date(Date.parse(goal.startDate)).toLocaleDateString()}
-                <br/>
-                <span style={{fontWeight: "bold"}}>Notes:</span> {goal.notes}
+                
+              <span style={{fontWeight: "bold"}}>Start Date:</span> {convertStartDate(goal)}
+              {/* {startDate(goal)}; */}
+              <br/>
+              <span style={{fontWeight: "bold"}}>Notes:</span> {goal.notes}
               </Typography>
-
               </CardContent>
               <CardActions sx={{ 
                 display: 'flex', 

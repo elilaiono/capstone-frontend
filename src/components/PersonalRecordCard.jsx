@@ -7,6 +7,13 @@ const PersonalRecordCard = ({ handleEditClick }) => {
   const { personalRecordData } = useContext(UserContext);
   const [expandedId, setExpandedId] = React.useState(null);
 
+  const convertDate = (record) => {
+    const timestamp = record.recordDate;
+    const date = new Date(timestamp._seconds * 1000)
+    const formattedDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
+    return formattedDate;
+ }
+
   return (
     <div >
     <Grid container spacing={4}>
@@ -20,7 +27,8 @@ const PersonalRecordCard = ({ handleEditClick }) => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            backgroundColor: "white" 
+            backgroundColor: "white",
+
           }}>
             <CardContent>
               <Typography sx={{ fontSize: 18, fontWeight: 'bold' }} color="text.secondary" gutterBottom>
@@ -50,7 +58,7 @@ const PersonalRecordCard = ({ handleEditClick }) => {
             <Collapse in={record.id === expandedId}>
               <CardContent>
                 <Typography variant="body2">
-                  <span style={{fontWeight: "bold"}}>Record Date:</span> {new Date(Date.parse(record.recordDate)).toLocaleDateString()}
+                  <span style={{fontWeight: "bold"}}>Record Date:</span> {convertDate(record)}
                   <br/>
                   <span style={{fontWeight: "bold"}}>Notes:</span> {record.notes}
                 </Typography>

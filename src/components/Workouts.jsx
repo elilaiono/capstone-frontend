@@ -3,16 +3,14 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { auth } from '../config/firebase';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import Album from "./WorkoutCards";
-
-import WorkoutCards from "./OldWorkoutCards";
+import WorkoutCard from "./WorkoutCards";
 import WorkoutForm from "./WorkoutForm";
-// import UserData from "./useUserData";
 import UserContext from "../contexts/UserContext";
 import '../styles/form.css'
+import { Dialog, DialogTitle, DialogContent, Button } from '@mui/material'
 
 const Workouts = ({}) => {
-  // const { userData } = UserData();
+  const baseUrl = process.env.REACT_APP_BASE_URL
   const userData = useContext(UserContext)
   const { reset } = useForm()
   
@@ -20,15 +18,18 @@ const Workouts = ({}) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedWorkout, setSelectedWorkout] = useState(null);
   const [message, setMessage] = useState("")
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
 
   const [showForm, setShowForm] = useState(false); // state to track whether form is shown
   const formRef = useRef(null); // reference to the form
 
-  useEffect(() => {
-    console.log('selectedWorkout changed', selectedWorkout);
-  }, [selectedWorkout]);
+  // useEffect(() => {
+  //   // console.log('selectedWorkout changed', selectedWorkout);
+  // }, [selectedWorkout]);
 
-  const handleClick = () => {
+  const handleClick = (workout) => {
+    setSelectedWorkout(workout)
     setShowForm(true);
     window.setTimeout(() => {
       formRef.current.scrollIntoView({ behavior: "smooth" });
@@ -41,8 +42,14 @@ const Workouts = ({}) => {
     }
   };
 
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    setSelectedWorkout(null); // Clear selected workout after successful update
+    window.location.reload(); // Reloading the page
+  };
+
+
   let onSubmit = async (data) => {
-    // console.log('onSubmit called', data)
     let apiUrl;
     let method;
     let user;
@@ -53,12 +60,12 @@ const Workouts = ({}) => {
     }
 
     if (data.delete) {
-      apiUrl = `http://localhost:8080/users/workouts/${auth.currentUser.uid}/${data.id}`;
+      apiUrl = `${baseUrl}/users/workouts/${auth.currentUser.uid}/${data.id}`;
       method = "DELETE";
     } else {
       apiUrl = data.id 
-        ? `http://localhost:8080/users/workouts/${auth.currentUser.uid}/${data.id}`
-        : "http://localhost:8080/users/workouts/add";
+        ? `${baseUrl}/users/workouts/${auth.currentUser.uid}/${data.id}`
+        : `${baseUrl}/users/workouts/add`;
       method = data.id ? "PUT" : "POST";
       user = {
         ...data,
@@ -105,11 +112,10 @@ const Workouts = ({}) => {
         setMessage("Workout deleted successfully");
       } else {
         console.log(`Workout was created/updated successfully`);
-        setMessage(data.id ? "Workout updated successfully" : "Workout created successfully");
+        // setMessage(data.id ? "Workout updated successfully" : "Workout created successfully");
+        setShowSuccessModal(true);
       }
-      reset(); // Resetting the form
-      setSelectedWorkout(null);  // Clear selected workout after successful update
-      window.location.reload(); // Reloading the page
+     
     } else {
       console.log(`An error occurred:`, res.status)
       setMessage("Some error occurred");
@@ -118,29 +124,33 @@ const Workouts = ({}) => {
   
   return (
     <div className="workouts-container">
-      {/* <WorkoutCards
-      selectedWorkout={selectedWorkout}
-      setSelectedWorkout={setSelectedWorkout}
-      onSubmit={onSubmit}
-      /> */}
-      <Album
+      <WorkoutCard
       selectedWorkout={selectedWorkout}
       setSelectedWorkout={setSelectedWorkout}
       handleClick={handleClick}
       onSubmit={onSubmit}
       />
 
-      {message && <div className="message">{message}</div>}
       <div ref={formRef}>
       { showForm && (
       <WorkoutForm 
-      initialValues={selectedWorkout || {}} 
+      initialValues={selectedWorkout || {}}
       onSubmit={onSubmit} 
       buttonText={selectedWorkout ? "Update" : "Create"} 
-      handleImageChange={handleImageChange} 
+      handleImageChange={handleImageChange}
+      onSuccess={() => setShowSuccessModal(true)}
       />
       )}
       </div>
+      <Dialog open={showSuccessModal} onClose={handleSuccessModalClose}>
+        <DialogTitle>Success</DialogTitle>
+        <DialogContent>
+          Your Workout was successfully {selectedWorkout ? "updated" : "created"}!
+          <Button variant="contained" color="primary" onClick={handleSuccessModalClose} fullWidth sx={{ mt: 2 }}>
+            Close
+          </Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

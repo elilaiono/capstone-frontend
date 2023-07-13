@@ -1,4 +1,3 @@
-
 import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../contexts/UserContext";
 import WorkoutData from './useWorkoutData';
@@ -29,7 +28,7 @@ import WorkoutContext from "../contexts/WorkoutContext";
 
 const defaultTheme = createTheme();
 
-export default function Album({ selectedWorkout, setSelectedWorkout, handleClick }) {
+export default function WorkoutCard({ selectedWorkout, setSelectedWorkout, handleClick }) {
   const userData = useContext(UserContext)
   const [loading, setLoading] = useState(true);
   const { 
@@ -199,7 +198,7 @@ export default function Album({ selectedWorkout, setSelectedWorkout, handleClick
                           {" " + workout.difficultyLevel}
                         </Typography>
                       </Box>
-                      <Box sx={{ pt: 2 }}>
+                      <Box sx={{ pt: 2, mb: 4 }}>
                         <Typography variant="subtitle2" component="span" fontWeight="bold">
                           Additional Notes:
                         </Typography>
@@ -208,31 +207,34 @@ export default function Album({ selectedWorkout, setSelectedWorkout, handleClick
                         </Typography>
                       </Box>
                       { workoutData.find(w => w.id === workout.id) && 
-                        <CardActions sx={{ pt: 2 }}>
-                          <div className="actions">
-                            <div className="button-container">
-                              <Button size="small" onClick={(e) => {
+                        <CardActions sx={{ 
+                          display: 'flex', 
+                          justifyContent: 'center',
+                        }}>
+                              <Button variant="contained" color="primary"size="small" onClick={(e) => {
                                 e.stopPropagation();
+                                handleClick(workout)
                                 setSelectedWorkout(workout);
+                                console.log(workout)
                               }}>Edit</Button>
             
-                              <Button size="small" onClick={(e) => {
+                              <Button variant="contained" color="primary" size="small" onClick={(e) => {
                                 e.stopPropagation();
                                 deleteWorkout(workout.id);
                               }}>Delete</Button>
-                            </div>
-                          </div>
                         </CardActions>
                       }
                     </Collapse>
                   </CardContent>
-                  <CardActions>
+                  <CardActions sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'center' 
+                  }}>
                     <IconButton
                       onClick={() => setExpandedId(workout.id === expandedId ? null : workout.id)}
                       sx={{ 
                         transform: workout.id === expandedId ? 'rotate(180deg)' : 'none', 
                         transition: 'transform 0.3s',
-                        mx: 13,
                       }}
                     >
                       <ExpandMoreIcon />

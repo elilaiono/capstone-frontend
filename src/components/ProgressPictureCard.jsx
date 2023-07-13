@@ -7,6 +7,13 @@ const ProgressPictureCard = () => {
   const { progressPictureData } = useContext(UserContext);
   const [expandedId, setExpandedId] = React.useState(null);
 
+  const convertDate = (picture) => {
+    const timestamp = picture.picDate;
+    const date = new Date(timestamp._seconds * 1000)
+    const formattedDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
+    return formattedDate;
+ }
+
   return (
     <Grid container spacing={4}>
       {progressPictureData.map((picture) => (
@@ -30,7 +37,7 @@ const ProgressPictureCard = () => {
             />
             <CardContent>
               <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                {new Date(Date.parse(picture.picDate)).toLocaleDateString()}
+                {convertDate(picture)}
               </Typography>
             </CardContent>
             <CardActions sx={{ 

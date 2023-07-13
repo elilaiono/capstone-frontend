@@ -1,11 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Box, Typography,
-Card, Checkbox, FormControlLabel } from "@mui/material";
+import { TextField, Button, Box, Typography,
+Card, Checkbox, FormControlLabel, Dialog, DialogTitle, DialogContent } from "@mui/material";
 
-function GoalForm({ initialValues, onSubmit, buttonText, updating }) {
+function GoalForm({ initialValues, onSubmit }) {
   const { handleSubmit, formState: { errors }, control, reset } = useForm();
 
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    window.location.reload();
+  };
+  
   // reset form values when initialValues change
   useEffect(() => {
     reset(initialValues);
@@ -13,7 +20,8 @@ function GoalForm({ initialValues, onSubmit, buttonText, updating }) {
 
   const onSubmitForm = (data) => {
     onSubmit(data);
-    reset();  // reset the form after submission
+    reset();
+    setShowSuccessModal(true);
   }
 
   return (
@@ -60,7 +68,7 @@ function GoalForm({ initialValues, onSubmit, buttonText, updating }) {
           <Controller
             name="startDate"
             control={control}
-            defaultValue=""
+            defaultValue={Date.now()}
             rules={{ required: "Start date is required" }}
             render={({ field }) =>
               <TextField
@@ -150,8 +158,16 @@ function GoalForm({ initialValues, onSubmit, buttonText, updating }) {
             Create
           </Button>
         </form>
-
       </Card>
+      <Dialog open={showSuccessModal} onClose={handleSuccessModalClose}>
+        <DialogTitle>Success</DialogTitle>
+        <DialogContent>
+          Your Goal was successfully created!
+          <Button variant="contained" color="primary" onClick={handleSuccessModalClose} fullWidth sx={{ mt: 2 }}>
+            Close
+          </Button>
+        </DialogContent>
+      </Dialog>
      </Box>
   );
 }
