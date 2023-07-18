@@ -168,7 +168,7 @@ export default function WorkoutCard({ selectedWorkout, setSelectedWorkout, handl
                 >
                   <CardMedia
                     component="img"
-                    sx={{ height: 140 }}
+                    sx={{ height: 250 }}
                     image={workout.imgUrl ? workout.imgUrl : 'https://loremflickr.com/320/240'} loading='lazy'
                     alt={workout.exerciseName}
                   />
