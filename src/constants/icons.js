@@ -1,4 +1,4 @@
-import landingPageImg from '../assets/dead-lift-opt.jpg'
+import landingPageImg from '../assets/dead-lift-opt-test.jpg'
 import goalImg from '../assets/goals.jpg'
 import wkLogImg from '../assets/wkLog.jpg'
 import logo from '../assets/dumbbell.png'
